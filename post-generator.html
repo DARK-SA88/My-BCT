@@ -1,0 +1,4352 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700;800&family=Share+Tech+Mono&family=Dancing+Script:wght@700&family=Bebas+Neue&family=Oswald:wght@500;700&family=Play:wght@400;700&family=Jura:wght@500;700&family=Chakra+Petch:wght@500;700&family=Teko:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --black:#000;
+  --black-1:#030303;
+  --black-2:#070707;
+  --black-3:#0b0b0b;
+  --panel:#0e0e0e;
+  --panel-2:#121212;
+
+  --red:#e5092f;
+  --red-bright:#ff1745;
+  --red-dark:#3b0711;
+  --red-soft:rgba(229,9,47,.12);
+  --red-line:rgba(229,9,47,.28);
+
+  --white:#fff;
+  --off:#e9e9e9;
+  --muted:#777;
+
+  --radius:12px;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html{
+  background:#000;
+}
+
+body{
+  min-height:100vh;
+  background:#000;
+  color:var(--white);
+  font-family:'Rajdhani',sans-serif;
+  overflow-x:hidden;
+}
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-3;
+
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+
+  background-size:55px 55px;
+  animation:gridMove 30s linear infinite;
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  width:100%;
+  height:1px;
+  left:0;
+  top:-10px;
+  pointer-events:none;
+  z-index:-2;
+
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(229,9,47,.16),
+    transparent
+  );
+
+  box-shadow:0 0 25px rgba(229,9,47,.12);
+  animation:scanLine 10s linear infinite;
+}
+
+@keyframes gridMove{
+  from{background-position:0 0,0 0}
+  to{background-position:55px 55px,55px 55px}
+}
+
+@keyframes scanLine{
+  0%{top:-10px;opacity:0}
+  8%{opacity:1}
+  50%{opacity:.45}
+  92%{opacity:1}
+  100%{top:100vh;opacity:0}
+}
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app-container{
+  width:100%;
+  max-width:1120px;
+  min-height:100vh;
+  margin:auto;
+  padding:0 18px 25px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.96),
+      rgba(0,0,0,.99)
+    );
+
+  position:relative;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.sys-header{
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:16px 4px;
+
+  border-bottom:1px solid rgba(255,255,255,.07);
+
+  position:relative;
+}
+
+.sys-header::after{
+  content:"";
+  position:absolute;
+  bottom:-1px;
+  left:0;
+  width:95px;
+  height:1px;
+  background:var(--red);
+  box-shadow:0 0 12px rgba(229,9,47,.45);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand-logo{
+  width:46px;
+  height:46px;
+  object-fit:contain;
+  display:block;
+}
+
+.brand-info{
+  display:flex;
+  flex-direction:column;
+  line-height:1;
+}
+
+.brand-name{
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:1.5px;
+}
+
+.brand-sub{
+  margin-top:6px;
+  color:#666;
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+}
+
+.header-status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:1.5px;
+  color:#666;
+}
+
+.status-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--red);
+  box-shadow:0 0 9px rgba(229,9,47,.8);
+  animation:statusPulse 1.7s infinite alternate;
+}
+
+@keyframes statusPulse{
+  from{opacity:.35;transform:scale(.8)}
+  to{opacity:1;transform:scale(1)}
+}
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+.canvas-wrapper{
+  padding:24px 0 20px;
+}
+
+.preview-label{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin-bottom:10px;
+
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+  color:#666;
+}
+
+.preview-label::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:linear-gradient(
+    90deg,
+    rgba(255,255,255,.08),
+    transparent
+  );
+}
+
+.canvas-frame{
+  position:relative;
+  width:100%;
+  max-width:700px;
+  margin:auto;
+
+  background:#000;
+  padding:5px;
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.9),
+    0 0 0 1px rgba(229,9,47,.05);
+}
+
+.canvas-frame::before,
+.canvas-frame::after{
+  content:"";
+  position:absolute;
+  width:18px;
+  height:18px;
+  pointer-events:none;
+}
+
+.canvas-frame::before{
+  top:-1px;
+  left:-1px;
+  border-top:2px solid var(--red);
+  border-left:2px solid var(--red);
+}
+
+.canvas-frame::after{
+  right:-1px;
+  bottom:-1px;
+  border-right:2px solid var(--red);
+  border-bottom:2px solid var(--red);
+}
+
+#mainCanvas{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:9px;
+  background:#000;
+  user-select:none;
+}
+
+#mainCanvas.tool-paint{
+  cursor:crosshair;
+}
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.cyber-tabs{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:5px;
+
+  padding:5px;
+
+  background:#080808;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:11px;
+
+  box-shadow:
+    inset 0 1px 10px rgba(0,0,0,.8);
+}
+
+.cyber-tab{
+  min-height:45px;
+
+  border:1px solid transparent;
+  border-radius:8px;
+
+  background:transparent;
+  color:#666;
+
+  font-family:'Orbitron',sans-serif;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.8px;
+
+  cursor:pointer;
+  transition:.25s;
+}
+
+.cyber-tab:hover{
+  color:#aaa;
+  background:rgba(255,255,255,.025);
+}
+
+.cyber-tab.active{
+  color:#fff;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(229,9,47,.16),
+      rgba(229,9,47,.035)
+    );
+
+  border-color:rgba(229,9,47,.3);
+
+  box-shadow:
+    inset 0 1px 0 rgba(229,9,47,.5),
+    0 4px 18px rgba(0,0,0,.5);
+}
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel-content{
+  display:none;
+}
+
+.panel-content.active{
+  display:flex;
+  flex-direction:column;
+  gap:13px;
+
+  animation:panelIn .25s ease;
+}
+
+@keyframes panelIn{
+  from{
+    opacity:0;
+    transform:translateY(5px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.sec-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  color:#aaa;
+
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+}
+
+.sec-title::before{
+  content:"";
+  width:3px;
+  height:12px;
+  background:var(--red);
+  box-shadow:0 0 8px rgba(229,9,47,.4);
+}
+
+.sec-title::after{
+  content:"";
+  flex:1;
+  height:1px;
+
+  background:linear-gradient(
+    90deg,
+    rgba(255,255,255,.08),
+    transparent
+  );
+}
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.input-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.input-label{
+  display:flex;
+  justify-content:space-between;
+
+  color:#777;
+
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.cyber-input{
+  width:100%;
+
+  padding:12px 13px;
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:9px;
+
+  outline:none;
+
+  background:#090909;
+  color:#fff;
+
+  font-family:'Rajdhani',sans-serif;
+  font-size:15px;
+  font-weight:600;
+
+  transition:.25s;
+}
+
+.cyber-input:hover{
+  border-color:rgba(255,255,255,.13);
+}
+
+.cyber-input:focus{
+  border-color:rgba(229,9,47,.55);
+
+  background:#0b0b0b;
+
+  box-shadow:
+    0 0 0 2px rgba(229,9,47,.07);
+}
+
+textarea.cyber-input{
+  min-height:95px;
+  resize:vertical;
+  line-height:1.5;
+}
+
+select.cyber-input{
+  appearance:none;
+  cursor:pointer;
+}
+
+/* =========================================================
+   FONT SELECT
+========================================================= */
+
+.font-selector-wrap{
+  position:relative;
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:9px;
+
+  background:#090909;
+
+  transition:.25s;
+}
+
+.font-selector-wrap:hover{
+  border-color:rgba(229,9,47,.35);
+}
+
+.cyber-select{
+  width:100%;
+
+  padding:13px 40px 13px 13px;
+
+  border:0;
+  outline:none;
+
+  background:transparent;
+  color:#fff;
+
+  appearance:none;
+
+  font-family:'Orbitron',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.8px;
+
+  cursor:pointer;
+}
+
+.cyber-select option{
+  background:#0b0b0b;
+  color:#fff;
+}
+
+.select-arrow{
+  position:absolute;
+  right:13px;
+  top:50%;
+  transform:translateY(-50%);
+
+  color:var(--red);
+
+  pointer-events:none;
+
+  font-size:10px;
+}
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+.upload-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.upload-slot{
+  height:105px;
+
+  position:relative;
+  overflow:hidden;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:1px dashed rgba(255,255,255,.1);
+  border-radius:10px;
+
+  background:#080808;
+
+  cursor:pointer;
+
+  transition:.25s;
+}
+
+.upload-slot:hover{
+  border-color:rgba(229,9,47,.5);
+  background:#0b0b0b;
+}
+
+.upload-slot.loaded{
+  border-style:solid;
+  border-color:rgba(229,9,47,.4);
+}
+
+.slot-bg{
+  position:absolute;
+  inset:0;
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  display:none;
+  opacity:.28;
+}
+
+.upload-slot.loaded .slot-bg{
+  display:block;
+  filter:grayscale(50%) contrast(115%);
+}
+
+.slot-content{
+  position:relative;
+  z-index:2;
+  text-align:center;
+}
+
+.slot-icon{
+  display:block;
+  margin-bottom:5px;
+
+  font-size:22px;
+  opacity:.75;
+}
+
+.slot-label{
+  color:#aaa;
+
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:1.5px;
+}
+
+/* =========================================================
+   SUB TABS
+========================================================= */
+
+.sub-tabs{
+  display:flex;
+  gap:4px;
+
+  padding:4px;
+
+  background:#080808;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:9px;
+}
+
+.sub-tab{
+  flex:1;
+
+  padding:9px 5px;
+
+  border:1px solid transparent;
+  border-radius:6px;
+
+  background:transparent;
+  color:#666;
+
+  font-family:'Rajdhani',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.7px;
+
+  cursor:pointer;
+  transition:.2s;
+}
+
+.sub-tab.active{
+  color:#fff;
+
+  background:rgba(229,9,47,.12);
+  border-color:rgba(229,9,47,.25);
+}
+
+/* =========================================================
+   MEDIA CONTROL AREA
+========================================================= */
+
+#mediaControls{
+  background:#070707 !important;
+
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:10px;
+
+  padding:9px !important;
+}
+
+.control-block{
+  margin-bottom:7px;
+
+  padding:12px;
+
+  background:#0b0b0b;
+
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:9px;
+}
+
+.control-block:last-child{
+  margin-bottom:0;
+}
+
+.control-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  margin-bottom:8px;
+}
+
+.val-badge{
+  color:var(--red);
+  font-weight:700;
+}
+
+.mini-lock-btn{
+  padding:5px 8px;
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:5px;
+
+  background:#080808;
+  color:#666;
+
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  letter-spacing:.5px;
+
+  cursor:pointer;
+}
+
+.mini-lock-btn.unlocked{
+  color:#fff;
+  border-color:rgba(229,9,47,.45);
+  background:rgba(229,9,47,.08);
+}
+
+/* =========================================================
+   RANGE
+========================================================= */
+
+input[type=range]{
+  width:100%;
+  height:18px;
+
+  margin:4px 0;
+
+  appearance:none;
+  background:transparent;
+}
+
+input[type=range]::-webkit-slider-runnable-track{
+  height:3px;
+
+  border-radius:4px;
+
+  background:#2b080e;
+}
+
+input[type=range]::-webkit-slider-thumb{
+  width:16px;
+  height:16px;
+
+  margin-top:-6.5px;
+
+  appearance:none;
+
+  border:2px solid #111;
+  border-radius:50%;
+
+  background:var(--red);
+
+  box-shadow:0 0 8px rgba(229,9,47,.45);
+
+  cursor:pointer;
+}
+
+input[type=range]:disabled{
+  opacity:.3;
+}
+
+/* =========================================================
+   CHECKBOXES
+========================================================= */
+
+.stamp-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.cyber-checkbox{
+  min-height:45px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:8px;
+
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:8px;
+
+  background:#080808;
+
+  color:#666;
+
+  font-family:'Rajdhani',sans-serif;
+  font-size:11px;
+  font-weight:700;
+
+  cursor:pointer;
+  transition:.2s;
+  text-align:center;
+}
+
+.cyber-checkbox input{
+  display:none;
+}
+
+.cyber-checkbox.checked{
+  color:#fff;
+  border-color:rgba(229,9,47,.3);
+  background:rgba(229,9,47,.08);
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn-primary{
+  width:100%;
+
+  padding:15px;
+
+  border:1px solid rgba(229,9,47,.55);
+  border-radius:9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #470611,
+      #a30724
+    );
+
+  color:#fff;
+
+  font-family:'Orbitron',sans-serif;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:1.5px;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.08);
+
+  transition:.2s;
+}
+
+.btn-primary:hover{
+  border-color:var(--red);
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.65),
+    0 0 18px rgba(229,9,47,.12);
+}
+
+.btn-primary:active{
+  transform:scale(.985);
+}
+
+/* =========================================================
+   LOG
+========================================================= */
+
+.sys-log{
+  padding:9px;
+
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:7px;
+
+  background:#070707;
+
+  color:#555;
+
+  text-align:center;
+
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:.5px;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+  padding:25px 0 8px;
+
+  text-align:center;
+
+  color:#444;
+
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:1px;
+}
+
+.footer strong{
+  color:#777;
+  font-weight:500;
+}
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+input[type=file]{
+  display:none;
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media(min-width:800px){
+
+  .app-container{
+    padding:0 28px 30px;
+  }
+
+  .canvas-wrapper{
+    padding:30px 0 25px;
+  }
+
+  .canvas-frame{
+    max-width:680px;
+  }
+
+  .dashboard{
+    max-width:900px;
+    margin:auto;
+  }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+  .app-container{
+    padding:0 12px 20px;
+  }
+
+  .sys-header{
+    padding:13px 2px;
+  }
+
+  .brand-logo{
+    width:40px;
+    height:40px;
+  }
+
+  .brand-name{
+    font-size:11px;
+  }
+
+  .brand-sub{
+    font-size:8px;
+  }
+
+  .header-status{
+    font-size:8px;
+  }
+
+  .canvas-wrapper{
+    padding:18px 0;
+  }
+
+  .cyber-tabs{
+    gap:3px;
+  }
+
+  .cyber-tab{
+    min-height:42px;
+    font-size:7px;
+    letter-spacing:.3px;
+  }
+
+  .cyber-checkbox{
+    font-size:10px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+  <!-- HEADER -->
+  <header class="sys-header">
+
+    <div class="brand">
+
+      <img
+        class="brand-logo"
+        src="https://i.ibb.co/rRSZ1cz7/20260928-231500.png"
+        alt="BCT"
+      >
+
+      <div class="brand-info">
+        <div class="brand-name">BANGLADESH CYBER TRIBE</div>
+        <div class="brand-sub"></div>
+      </div>
+
+    </div>
+
+    
+
+  </header>
+
+
+  <!-- PREVIEW -->
+  <div class="canvas-wrapper">
+
+    <div class="preview-label">
+      LIVE PREVIEW
+    </div>
+
+    <div class="canvas-frame">
+      <canvas id="mainCanvas"></canvas>
+    </div>
+
+  </div>
+
+
+  <!-- DASHBOARD -->
+  <div class="dashboard">
+
+    <!-- TABS -->
+    <nav class="cyber-tabs">
+
+      <button
+        class="cyber-tab active"
+        onclick="switchTab('tab-intel')"
+      >
+        INFO & TEXT
+      </button>
+
+      <button
+        class="cyber-tab"
+        onclick="switchTab('tab-media')"
+      >
+        IMAGES
+      </button>
+
+      <button
+        class="cyber-tab"
+        onclick="switchTab('tab-censor')"
+      >
+        BLUR
+      </button>
+
+      <button
+        class="cyber-tab"
+        onclick="switchTab('tab-fx')"
+      >
+        EFFECTS
+      </button>
+
+    </nav>
+
+
+    <!-- =====================================================
+         INFO / TEXT
+    ====================================================== -->
+
+    <div id="tab-intel" class="panel-content active">
+
+      <div class="sec-title">
+        SELECT INCIDENT
+      </div>
+
+      <div class="input-group">
+
+        <select
+          id="categorySelect"
+          class="cyber-input"
+          onchange="applyPreset()"
+        >
+
+          <option value="obscene_account">
+            Adult Content (Account)
+          </option>
+
+          <option value="obscene_page">
+            Adult Content (Page)
+          </option>
+
+          <option value="atheist_account">
+            Hurt Religious Sentiment (Account)
+          </option>
+
+          <option value="atheist_page">
+            Hurt Religious Sentiment (Page)
+          </option>
+
+          <option value="anti_islam_account">
+            Anti-Islamic (Account)
+          </option>
+
+          <option value="anti_islam_page">
+            Anti-Islamic (Page)
+          </option>
+
+          <option value="gambling_page">
+            Illegal Gambling (Page)
+          </option>
+
+          <option value="gambling_account">
+            Illegal Gambling (Account)
+          </option>
+
+          <option value="scammer_page">
+            Scam / Fraud (Page)
+          </option>
+
+          <option value="scammer_account">
+            Scam / Fraud (Account)
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="sec-title">
+        TYPOGRAPHY
+      </div>
+
+
+      <div class="input-group">
+
+        <div class="input-label">
+          Display Font
+        </div>
+
+        <div class="font-selector-wrap">
+
+          <select
+            id="fontSelect"
+            class="cyber-select"
+            onchange="queueRender()"
+          >
+
+            <option value="Rajdhani">
+              Rajdhani
+            </option>
+
+            <option value="Play">
+              Play
+            </option>
+
+            <option value="Orbitron">
+              Orbitron
+            </option>
+
+            <option value="Bebas Neue">
+              Bebas Neue
+            </option>
+
+            <option value="Oswald">
+              Oswald
+            </option>
+
+            <option value="Jura">
+              Jura
+            </option>
+
+            <option value="Chakra Petch">
+              Chakra Petch
+            </option>
+
+            <option value="Share Tech Mono">
+              Share Tech Mono
+            </option>
+
+            <option value="Teko">
+              Teko
+            </option>
+
+          </select>
+
+          <div class="select-arrow">▼</div>
+
+        </div>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <div class="input-label">
+          Main Heading
+        </div>
+
+        <input
+          type="text"
+          id="headerText"
+          class="cyber-input"
+          oninput="queueRender()"
+        >
+
+      </div>
+
+
+      <div class="input-group">
+
+        <div class="input-label">
+          Description
+        </div>
+
+        <textarea
+          id="mainText"
+          class="cyber-input"
+          oninput="queueRender()"
+        ></textarea>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <div class="input-label">
+          White Highlight
+        </div>
+
+        <input
+          type="text"
+          id="hlText"
+          class="cyber-input"
+          placeholder="e.g. 250K followers"
+          oninput="queueRender()"
+        >
+
+      </div>
+
+
+      <div class="input-group">
+
+        <div class="input-label">
+          Red Highlight
+        </div>
+
+        <input
+          type="text"
+          id="stText"
+          class="cyber-input"
+          placeholder="e.g. removed"
+          oninput="queueRender()"
+        >
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         IMAGES
+    ====================================================== -->
+
+    <div id="tab-media" class="panel-content">
+
+      <div class="sec-title">
+        UPLOAD IMAGES
+      </div>
+
+
+      <div class="upload-grid">
+
+        <div
+          class="upload-slot"
+          id="slot1"
+          onclick="document.getElementById('photo1In').click()"
+        >
+
+          <img
+            class="slot-bg"
+            id="prev1"
+            alt=""
+          >
+
+          <div class="slot-content">
+
+            <span class="slot-icon">◈</span>
+
+            <div class="slot-label">
+              LEFT IMAGE
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="upload-slot"
+          id="slot2"
+          onclick="document.getElementById('photo2In').click()"
+        >
+
+          <img
+            class="slot-bg"
+            id="prev2"
+            alt=""
+          >
+
+          <div class="slot-content">
+
+            <span class="slot-icon">◈</span>
+
+            <div class="slot-label">
+              RIGHT IMAGE
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="sec-title">
+        INDIVIDUAL CALIBRATION
+      </div>
+
+
+      <div class="sub-tabs">
+
+        <button
+          class="sub-tab active"
+          id="btnEv1"
+          onclick="selectEv(1)"
+        >
+          SELECT LEFT
+        </button>
+
+        <button
+          class="sub-tab"
+          id="btnEv2"
+          onclick="selectEv(2)"
+        >
+          SELECT RIGHT
+        </button>
+
+      </div>
+
+
+      <div id="mediaControls">
+
+        <div class="control-block">
+
+          <div class="control-header">
+
+            <div class="input-label">
+              Zoom Level
+              <span
+                class="val-badge"
+                id="valZoom"
+              >
+                100%
+              </span>
+            </div>
+
+            <button
+              id="btn-lock-z"
+              class="mini-lock-btn"
+              onclick="toggleLock('z')"
+            >
+              🔒 LOCKED
+            </button>
+
+          </div>
+
+          <input
+            type="range"
+            id="adjZ"
+            min="100"
+            max="400"
+            value="100"
+            oninput="updateMediaState('z')"
+            disabled
+          >
+
+        </div>
+
+
+        <div class="control-block">
+
+          <div class="control-header">
+
+            <div class="input-label">
+              Move Left/Right
+              <span
+                class="val-badge"
+                id="valX"
+              >
+                50%
+              </span>
+            </div>
+
+            <button
+              id="btn-lock-x"
+              class="mini-lock-btn"
+              onclick="toggleLock('x')"
+            >
+              🔒 LOCKED
+            </button>
+
+          </div>
+
+          <input
+            type="range"
+            id="adjX"
+            min="0"
+            max="100"
+            value="50"
+            oninput="updateMediaState('x')"
+            disabled
+          >
+
+        </div>
+
+
+        <div class="control-block">
+
+          <div class="control-header">
+
+            <div class="input-label">
+              Move Up/Down
+              <span
+                class="val-badge"
+                id="valY"
+              >
+                50%
+              </span>
+            </div>
+
+            <button
+              id="btn-lock-y"
+              class="mini-lock-btn"
+              onclick="toggleLock('y')"
+            >
+              🔒 LOCKED
+            </button>
+
+          </div>
+
+          <input
+            type="range"
+            id="adjY"
+            min="0"
+            max="100"
+            value="50"
+            oninput="updateMediaState('y')"
+            disabled
+          >
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BLUR
+    ====================================================== -->
+
+    <div id="tab-censor" class="panel-content">
+
+      <div class="sec-title">
+        BLUR TOOLS
+      </div>
+
+
+      <div class="sub-tabs">
+
+        <button
+          class="sub-tab active"
+          id="modeBlur"
+          onclick="setPaintMode('blur')"
+        >
+          NORMAL BLUR
+        </button>
+
+        <button
+          class="sub-tab"
+          id="modeMosaic"
+          onclick="setPaintMode('mosaic')"
+        >
+          PIXEL BLUR
+        </button>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <div class="input-label">
+
+          Brush Size
+
+          <span
+            style="color:var(--red)"
+            id="valBrush"
+          >
+            40px
+          </span>
+
+        </div>
+
+        <input
+          type="range"
+          id="brushSize"
+          min="10"
+          max="100"
+          value="40"
+          oninput="
+            document.getElementById('valBrush').innerText=this.value+'px'
+          "
+        >
+
+      </div>
+
+
+      <div style="display:flex;gap:8px">
+
+        <button
+          style="
+            flex:1;
+            padding:11px;
+            background:#080808;
+            border:1px solid rgba(255,255,255,.08);
+            color:#aaa;
+            border-radius:8px;
+            cursor:pointer;
+            font-family:'Rajdhani',sans-serif;
+            font-weight:700;
+          "
+          onclick="undoPaint()"
+        >
+          ↺ UNDO
+        </button>
+
+
+        <button
+          style="
+            flex:1;
+            padding:11px;
+            background:#080808;
+            border:1px solid rgba(229,9,47,.18);
+            color:var(--red);
+            border-radius:8px;
+            cursor:pointer;
+            font-family:'Rajdhani',sans-serif;
+            font-weight:700;
+          "
+          onclick="clearPaint()"
+        >
+          ✕ CLEAR ALL
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         EFFECTS
+    ====================================================== -->
+
+    <div id="tab-fx" class="panel-content">
+
+      <div class="sec-title">
+        EXTRA EFFECTS
+      </div>
+
+
+      <div class="input-group">
+
+        <div class="input-label">
+          Custom Signature Name
+        </div>
+
+        <input
+          type="text"
+          id="sigText"
+          class="cyber-input"
+          placeholder="e.g. Operation Alpha"
+          oninput="queueRender()"
+        >
+
+      </div>
+
+
+      <div class="stamp-grid">
+
+        <label class="cyber-checkbox checked">
+
+          <input
+            type="checkbox"
+            id="chkLogo"
+            checked
+            onchange="toggleCheckbox(this); queueRender()"
+          >
+
+          Show BCT Logo
+
+        </label>
+
+
+        <label class="cyber-checkbox">
+
+          <input
+            type="checkbox"
+            id="chkStampTerm"
+            onchange="toggleCheckbox(this); queueRender()"
+          >
+
+          [TERMINATED]
+
+        </label>
+
+
+        <label class="cyber-checkbox checked">
+
+          <input
+            type="checkbox"
+            id="chkSignature"
+            checked
+            onchange="toggleCheckbox(this); queueRender()"
+          >
+
+          Show Signature
+
+        </label>
+
+
+        <label class="cyber-checkbox">
+
+          <input
+            type="checkbox"
+            id="chkScan"
+            onchange="toggleCheckbox(this); queueRender()"
+          >
+
+          Background Scanlines
+
+        </label>
+
+      </div>
+
+
+      <div class="sec-title">
+        DOWNLOAD
+      </div>
+
+
+      <button
+        class="btn-primary"
+        onclick="exportCard()"
+      >
+        DOWNLOAD POSTCARD
+      </button>
+
+
+      <div
+        class="sys-log"
+        id="statusLog"
+      >
+        Ready to use.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- FOOTER -->
+
+  <footer class="footer">
+    Developed By: <strong>NexFly Org</strong>
+  </footer>
+
+</div>
+
+
+<input
+  type="file"
+  id="photo1In"
+  accept="image/*"
+  onchange="loadPhoto(this,1)"
+>
+
+<input
+  type="file"
+  id="photo2In"
+  accept="image/*"
+  onchange="loadPhoto(this,2)"
+>
+
+
+<script>
+
+/* ==============================================================
+   PRESETS
+============================================================== */
+
+const presets = {
+
+  obscene_account:{
+    h:"OBSCENE ACCOUNT REMOVED",
+    d:"A Facebook account with 136K followers has been removed for sharing adult and indecent content by Team BCT.",
+    w:"136K followers",
+    r:"removed"
+  },
+
+  obscene_page:{
+    h:"OBSCENE PAGE REMOVED",
+    d:"A Facebook page with 250K followers has been removed for sharing adult and indecent content by Team BCT.",
+    w:"250K followers",
+    r:"removed"
+  },
+
+  atheist_account:{
+    h:"ACCOUNT REMOVED",
+    d:"A Facebook account with 50K followers has been removed for spreading atheism and hurting religious sentiments by Team BCT.",
+    w:"50K followers",
+    r:"removed"
+  },
+
+  atheist_page:{
+    h:"PAGE REMOVED",
+    d:"A Facebook page with 100K followers has been removed for spreading atheism and hurting religious sentiments by Team BCT.",
+    w:"100K followers",
+    r:"removed"
+  },
+
+  anti_islam_account:{
+    h:"ACCOUNT REMOVED",
+    d:"A Facebook account with 80K followers has been removed for spreading hate speech and anti-Islamic posts by Team BCT.",
+    w:"80K followers",
+    r:"removed"
+  },
+
+  anti_islam_page:{
+    h:"PAGE REMOVED",
+    d:"A Facebook page with 300K followers has been removed for spreading hate speech and anti-Islamic posts by Team BCT.",
+    w:"300K followers",
+    r:"removed"
+  },
+
+  gambling_page:{
+    h:"GAMBLING PAGE REMOVED",
+    d:"A Facebook page with 400K followers has been removed for promoting illegal online gambling and betting by Team BCT.",
+    w:"400K followers",
+    r:"removed"
+  },
+
+  gambling_account:{
+    h:"GAMBLING ACCOUNT REMOVED",
+    d:"A Facebook account with 60K followers has been removed for promoting illegal online gambling and betting by Team BCT.",
+    w:"60K followers",
+    r:"removed"
+  },
+
+  scammer_page:{
+    h:"SCAMMER PAGE REMOVED",
+    d:"A Facebook page with 150K followers has been removed for scamming people and doing fraud by Team BCT.",
+    w:"150K followers",
+    r:"removed"
+  },
+
+  scammer_account:{
+    h:"SCAMMER ACCOUNT REMOVED",
+    d:"A Facebook account with 45K followers has been removed for scamming people and doing fraud by Team BCT.",
+    w:"45K followers",
+    r:"removed"
+  }
+
+};
+
+
+/* ==============================================================
+   CANVAS
+============================================================== */
+
+const canvas=document.getElementById('mainCanvas');
+
+const ctx=canvas.getContext(
+  '2d',
+  {willReadFrequently:true}
+);
+
+const W=1080;
+const H=1080;
+
+canvas.width=W;
+canvas.height=H;
+
+
+const bgCanvas=document.createElement('canvas');
+
+bgCanvas.width=W;
+bgCanvas.height=H;
+
+const bgCtx=bgCanvas.getContext(
+  '2d',
+  {willReadFrequently:true}
+);
+
+
+const paintCanvas=document.createElement('canvas');
+
+paintCanvas.width=W;
+paintCanvas.height=H;
+
+const pCtx=paintCanvas.getContext('2d');
+
+
+let renderFrameId=null;
+
+let p1Img=null;
+let p2Img=null;
+let logoImg=null;
+
+let paintMode='blur';
+let paintHistory=[];
+
+let activeEv=1;
+
+let locks={
+  z:true,
+  x:true,
+  y:true
+};
+
+let mediaStates=[
+  {z:100,x:50,y:50},
+  {z:100,x:50,y:50}
+];
+
+
+const GEO={
+
+  headerY:95,
+
+  boxX:130,
+  boxY:145,
+  boxW:820,
+  boxH:180,
+
+  photoY:360,
+  photoW:410,
+  photoH:660,
+  photoGap:40
+
+};
+
+
+/* ==============================================================
+   LOGO
+============================================================== */
+
+const logoTry=new Image();
+
+logoTry.crossOrigin='anonymous';
+
+logoTry.onload=()=>{
+
+  logoImg=logoTry;
+
+  queueRender();
+
+};
+
+logoTry.src=
+'https://i.ibb.co/Y72LMbdQ/20260502-163657.png';
+
+
+/* ==============================================================
+   UI
+============================================================== */
+
+function switchTab(tabId){
+
+  document
+    .querySelectorAll('.panel-content')
+    .forEach(el=>{
+      el.classList.remove('active');
+    });
+
+  document
+    .getElementById(tabId)
+    .classList.add('active');
+
+
+  const tabs=
+    document.querySelectorAll('.cyber-tab');
+
+
+  tabs[0].classList.toggle(
+    'active',
+    tabId==='tab-intel'
+  );
+
+  tabs[1].classList.toggle(
+    'active',
+    tabId==='tab-media'
+  );
+
+  tabs[2].classList.toggle(
+    'active',
+    tabId==='tab-censor'
+  );
+
+  tabs[3].classList.toggle(
+    'active',
+    tabId==='tab-fx'
+  );
+
+
+  canvas.classList.toggle(
+    'tool-paint',
+    tabId==='tab-censor'
+  );
+
+}
+
+
+function toggleCheckbox(input){
+
+  input.parentElement.classList.toggle(
+    'checked',
+    input.checked
+  );
+
+}
+
+
+function applyPreset(){
+
+  const v=
+    document.getElementById(
+      'categorySelect'
+    ).value;
+
+
+  if(presets[v]){
+
+    document.getElementById(
+      'headerText'
+    ).value=presets[v].h;
+
+
+    document.getElementById(
+      'mainText'
+    ).value=presets[v].d;
+
+
+    document.getElementById(
+      'hlText'
+    ).value=presets[v].w;
+
+
+    document.getElementById(
+      'stText'
+    ).value=presets[v].r;
+
+  }
+
+  queueRender();
+
+}
+
+
+function logMsg(msg){
+
+  document.getElementById(
+    'statusLog'
+  ).innerText=msg;
+
+}
+
+
+document.fonts.ready.then(()=>{
+  applyPreset();
+});
+
+
+function queueRender(){
+
+  if(renderFrameId)
+    cancelAnimationFrame(renderFrameId);
+
+  renderFrameId=
+    requestAnimationFrame(renderFull);
+
+}
+
+
+/* ==============================================================
+   LOCKS
+============================================================== */
+
+function toggleLock(axis){
+
+  locks[axis]=!locks[axis];
+
+
+  const btn=
+    document.getElementById(
+      'btn-lock-'+axis
+    );
+
+
+  const slider=
+    document.getElementById(
+      'adj'+axis.toUpperCase()
+    );
+
+
+  if(locks[axis]){
+
+    btn.innerHTML='🔒 LOCKED';
+
+    btn.classList.remove('unlocked');
+
+    slider.disabled=true;
+
+  }else{
+
+    btn.innerHTML='🔓 UNLOCKED';
+
+    btn.classList.add('unlocked');
+
+    slider.disabled=false;
+
+  }
+
+}
+
+
+/* ==============================================================
+   IMAGE LOAD
+============================================================== */
+
+function loadPhoto(input,n){
+
+  const file=input.files[0];
+
+  if(!file)return;
+
+
+  const reader=new FileReader();
+
+
+  reader.onload=e=>{
+
+    const img=new Image();
+
+
+    img.onload=()=>{
+
+      if(n===1){
+
+        p1Img=img;
+
+        mediaStates[0]={
+          z:100,
+          x:50,
+          y:50
+        };
+
+      }else{
+
+        p2Img=img;
+
+        mediaStates[1]={
+          z:100,
+          x:50,
+          y:50
+        };
+
+      }
+
+
+      document.getElementById(
+        'prev'+n
+      ).src=e.target.result;
+
+
+      document.getElementById(
+        'slot'+n
+      ).classList.add('loaded');
+
+
+      selectEv(n);
+
+      queueRender();
+
+      logMsg(
+        `Image ${n} uploaded.`
+      );
+
+    };
+
+
+    img.src=e.target.result;
+
+  };
+
+
+  reader.readAsDataURL(file);
+
+  input.value='';
+
+}
+
+
+function selectEv(n){
+
+  activeEv=n;
+
+
+  document.getElementById(
+    'btnEv1'
+  ).classList.toggle(
+    'active',
+    n===1
+  );
+
+
+  document.getElementById(
+    'btnEv2'
+  ).classList.toggle(
+    'active',
+    n===2
+  );
+
+
+  const s=
+    mediaStates[n-1];
+
+
+  document.getElementById(
+    'adjZ'
+  ).value=s.z;
+
+
+  document.getElementById(
+    'adjX'
+  ).value=s.x;
+
+
+  document.getElementById(
+    'adjY'
+  ).value=s.y;
+
+
+  updateLabels(s);
+
+}
+
+
+function updateLabels(s){
+
+  document.getElementById(
+    'valZoom'
+  ).innerText=s.z+'%';
+
+
+  document.getElementById(
+    'valX'
+  ).innerText=s.x+'%';
+
+
+  document.getElementById(
+    'valY'
+  ).innerText=s.y+'%';
+
+}
+
+
+function updateMediaState(axis){
+
+  if(locks[axis])return;
+
+
+  const s=
+    mediaStates[activeEv-1];
+
+
+  s[axis]=parseInt(
+    document.getElementById(
+      'adj'+axis.toUpperCase()
+    ).value
+  );
+
+
+  updateLabels(s);
+
+  queueRender();
+
+}
+
+
+/* ==============================================================
+   PAINT / BLUR
+============================================================== */
+
+function setPaintMode(m){
+
+  paintMode=m;
+
+
+  document.getElementById(
+    'modeBlur'
+  ).classList.toggle(
+    'active',
+    m==='blur'
+  );
+
+
+  document.getElementById(
+    'modeMosaic'
+  ).classList.toggle(
+    'active',
+    m==='mosaic'
+  );
+
+}
+
+
+let painting=false;
+
+
+function getPos(e){
+
+  const rect=
+    canvas.getBoundingClientRect();
+
+
+  const scaleX=
+    W/rect.width;
+
+
+  const scaleY=
+    H/rect.height;
+
+
+  const src=
+    e.touches
+      ?e.touches[0]
+      :e;
+
+
+  return{
+
+    x:
+      (src.clientX-rect.left)
+      *scaleX,
+
+    y:
+      (src.clientY-rect.top)
+      *scaleY
+
+  };
+
+}
+
+
+canvas.addEventListener(
+  'mousedown',
+  e=>{
+
+    if(
+      document
+      .getElementById('tab-censor')
+      .classList
+      .contains('active')
+    ){
+
+      painting=true;
+
+      savePaint();
+
+      doPaint(getPos(e));
+
+    }
+
+  }
+);
+
+
+canvas.addEventListener(
+  'mousemove',
+  e=>{
+
+    if(painting)
+      doPaint(getPos(e));
+
+  }
+);
+
+
+canvas.addEventListener(
+  'mouseup',
+  ()=>painting=false
+);
+
+
+canvas.addEventListener(
+  'mouseleave',
+  ()=>painting=false
+);
+
+
+canvas.addEventListener(
+  'touchstart',
+  e=>{
+
+    if(
+      document
+      .getElementById('tab-censor')
+      .classList
+      .contains('active')
+    ){
+
+      e.preventDefault();
+
+      painting=true;
+
+      savePaint();
+
+      doPaint(getPos(e));
+
+    }
+
+  },
+  {passive:false}
+);
+
+
+canvas.addEventListener(
+  'touchmove',
+  e=>{
+
+    if(painting){
+
+      e.preventDefault();
+
+      doPaint(getPos(e));
+
+    }
+
+  },
+  {passive:false}
+);
+
+
+canvas.addEventListener(
+  'touchend',
+  ()=>painting=false
+);
+
+
+function doPaint(pos){
+
+  const r=
+    parseInt(
+      document.getElementById(
+        'brushSize'
+      ).value
+    );
+
+
+  const cx=pos.x;
+  const cy=pos.y;
+
+
+  const snap=
+    document.createElement(
+      'canvas'
+    );
+
+
+  snap.width=W;
+  snap.height=H;
+
+
+  const sCtx=
+    snap.getContext(
+      '2d',
+      {willReadFrequently:true}
+    );
+
+
+  sCtx.drawImage(
+    bgCanvas,
+    0,
+    0
+  );
+
+
+  sCtx.drawImage(
+    paintCanvas,
+    0,
+    0
+  );
+
+
+  const x1=
+    Math.max(
+      0,
+      cx-r|0
+    );
+
+
+  const y1=
+    Math.max(
+      0,
+      cy-r|0
+    );
+
+
+  const x2=
+    Math.min(
+      W,
+      cx+r|0
+    );
+
+
+  const y2=
+    Math.min(
+      H,
+      cy+r|0
+    );
+
+
+  const w=x2-x1;
+  const h=y2-y1;
+
+
+  if(w<=0||h<=0)return;
+
+
+  if(paintMode==='blur'){
+
+    const patch=
+      document.createElement(
+        'canvas'
+      );
+
+
+    patch.width=w;
+    patch.height=h;
+
+
+    const ptCtx=
+      patch.getContext('2d');
+
+
+    ptCtx.filter=
+      `blur(${Math.round(r*.3)}px)`;
+
+
+    ptCtx.drawImage(
+      snap,
+      x1,
+      y1,
+      w,
+      h,
+      0,
+      0,
+      w,
+      h
+    );
+
+
+    pCtx.save();
+
+    pCtx.beginPath();
+
+    pCtx.arc(
+      cx,
+      cy,
+      r,
+      0,
+      Math.PI*2
+    );
+
+    pCtx.clip();
+
+    pCtx.drawImage(
+      patch,
+      x1,
+      y1
+    );
+
+    pCtx.restore();
+
+
+  }else{
+
+    const blk=
+      Math.max(
+        8,
+        Math.round(r*.4)
+      );
+
+
+    pCtx.save();
+
+    pCtx.beginPath();
+
+    pCtx.arc(
+      cx,
+      cy,
+      r,
+      0,
+      Math.PI*2
+    );
+
+    pCtx.clip();
+
+
+    for(
+      let bx=x1;
+      bx<x2;
+      bx+=blk
+    ){
+
+      for(
+        let by=y1;
+        by<y2;
+        by+=blk
+      ){
+
+        const bw=
+          Math.min(
+            blk,
+            x2-bx
+          );
+
+
+        const bh=
+          Math.min(
+            blk,
+            y2-by
+          );
+
+
+        const data=
+          sCtx.getImageData(
+            bx,
+            by,
+            bw,
+            bh
+          ).data;
+
+
+        let R=0;
+        let G=0;
+        let B=0;
+        let C=0;
+
+
+        for(
+          let i=0;
+          i<data.length;
+          i+=4
+        ){
+
+          R+=data[i];
+          G+=data[i+1];
+          B+=data[i+2];
+          C++;
+
+        }
+
+
+        if(C>0){
+
+          pCtx.fillStyle=
+            `rgb(${R/C},${G/C},${B/C})`;
+
+          pCtx.fillRect(
+            bx,
+            by,
+            bw+1,
+            bh+1
+          );
+
+        }
+
+      }
+
+    }
+
+
+    pCtx.restore();
+
+  }
+
+
+  queueRender();
+
+}
+
+
+function savePaint(){
+
+  paintHistory.push(
+    pCtx.getImageData(
+      0,
+      0,
+      W,
+      H
+    )
+  );
+
+
+  if(paintHistory.length>15)
+    paintHistory.shift();
+
+}
+
+
+function undoPaint(){
+
+  if(!paintHistory.length)
+    return;
+
+
+  pCtx.putImageData(
+    paintHistory.pop(),
+    0,
+    0
+  );
+
+
+  queueRender();
+
+}
+
+
+function clearPaint(){
+
+  pCtx.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  paintHistory=[];
+
+  queueRender();
+
+}
+
+
+/* ==============================================================
+   SHAPES
+============================================================== */
+
+function drawRoundedRect(
+  ctx,
+  x,
+  y,
+  width,
+  height,
+  radius
+){
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    x+radius,
+    y
+  );
+
+  ctx.lineTo(
+    x+width-radius,
+    y
+  );
+
+  ctx.quadraticCurveTo(
+    x+width,
+    y,
+    x+width,
+    y+radius
+  );
+
+  ctx.lineTo(
+    x+width,
+    y+height-radius
+  );
+
+  ctx.quadraticCurveTo(
+    x+width,
+    y+height,
+    x+width-radius,
+    y+height
+  );
+
+  ctx.lineTo(
+    x+radius,
+    y+height
+  );
+
+  ctx.quadraticCurveTo(
+    x,
+    y+height,
+    x,
+    y+height-radius
+  );
+
+  ctx.lineTo(
+    x,
+    y+radius
+  );
+
+  ctx.quadraticCurveTo(
+    x,
+    y,
+    x+radius,
+    y
+  );
+
+  ctx.closePath();
+
+}
+
+
+function drawHUDCorners(
+  context,
+  x,
+  y,
+  w,
+  h,
+  len,
+  thk
+){
+
+  context.lineWidth=thk;
+
+
+  context.beginPath();
+
+  context.moveTo(
+    x,
+    y+len
+  );
+
+  context.lineTo(
+    x,
+    y
+  );
+
+  context.lineTo(
+    x+len,
+    y
+  );
+
+  context.stroke();
+
+
+  context.beginPath();
+
+  context.moveTo(
+    x+w-len,
+    y
+  );
+
+  context.lineTo(
+    x+w,
+    y
+  );
+
+  context.lineTo(
+    x+w,
+    y+len
+  );
+
+  context.stroke();
+
+
+  context.beginPath();
+
+  context.moveTo(
+    x,
+    y+h-len
+  );
+
+  context.lineTo(
+    x,
+    y+h
+  );
+
+  context.lineTo(
+    x+len,
+    y+h
+  );
+
+  context.stroke();
+
+
+  context.beginPath();
+
+  context.moveTo(
+    x+w-len,
+    y+h
+  );
+
+  context.lineTo(
+    x+w,
+    y+h
+  );
+
+  context.lineTo(
+    x+w,
+    y+h-len
+  );
+
+  context.stroke();
+
+}
+
+
+function drawAngledFrame(
+  context,
+  x,
+  y,
+  w,
+  h,
+  cut
+){
+
+  context.beginPath();
+
+  context.moveTo(
+    x+cut,
+    y
+  );
+
+  context.lineTo(
+    x+w,
+    y
+  );
+
+  context.lineTo(
+    x+w,
+    y+h-cut
+  );
+
+  context.lineTo(
+    x+w-cut,
+    y+h
+  );
+
+  context.lineTo(
+    x,
+    y+h
+  );
+
+  context.lineTo(
+    x,
+    y+cut
+  );
+
+  context.closePath();
+
+}
+
+
+/* ==============================================================
+   POST BACKGROUND
+   ==============================================================
+   IMPORTANT:
+   Everything below remains the original POST DESIGN.
+============================================================== */
+
+function drawAbstractBackground(){
+
+  bgCtx.fillStyle='#050001';
+
+  bgCtx.fillRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  const gradBase=
+    bgCtx.createRadialGradient(
+      W/2,
+      H/2,
+      50,
+      W/2,
+      H/2,
+      1000
+    );
+
+
+  gradBase.addColorStop(
+    0,
+    '#260006'
+  );
+
+  gradBase.addColorStop(
+    .5,
+    '#0a0002'
+  );
+
+  gradBase.addColorStop(
+    1,
+    '#020000'
+  );
+
+
+  bgCtx.fillStyle=gradBase;
+
+  bgCtx.fillRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  bgCtx.save();
+
+  bgCtx.globalCompositeOperation='screen';
+
+
+  let gradFlare=
+    bgCtx.createLinearGradient(
+      W,
+      0,
+      0,
+      H
+    );
+
+
+  gradFlare.addColorStop(
+    0,
+    'rgba(255,0,60,.25)'
+  );
+
+  gradFlare.addColorStop(
+    .5,
+    'transparent'
+  );
+
+
+  bgCtx.fillStyle=gradFlare;
+
+  bgCtx.beginPath();
+
+  bgCtx.moveTo(W,0);
+  bgCtx.lineTo(W,H/2);
+  bgCtx.lineTo(0,H);
+  bgCtx.lineTo(0,H/2);
+
+  bgCtx.fill();
+
+
+  let gradFlare2=
+    bgCtx.createLinearGradient(
+      0,
+      H,
+      W,
+      0
+    );
+
+
+  gradFlare2.addColorStop(
+    0,
+    'rgba(180,0,35,.3)'
+  );
+
+  gradFlare2.addColorStop(
+    .6,
+    'transparent'
+  );
+
+
+  bgCtx.fillStyle=gradFlare2;
+
+  bgCtx.beginPath();
+
+  bgCtx.moveTo(0,H);
+  bgCtx.lineTo(W/2,H);
+  bgCtx.lineTo(W,H/2);
+  bgCtx.lineTo(W/2,0);
+
+  bgCtx.fill();
+
+
+  let orbTopLeft=
+    bgCtx.createRadialGradient(
+      200,
+      200,
+      10,
+      200,
+      200,
+      500
+    );
+
+
+  orbTopLeft.addColorStop(
+    0,
+    'rgba(255,0,60,.15)'
+  );
+
+  orbTopLeft.addColorStop(
+    1,
+    'transparent'
+  );
+
+
+  bgCtx.fillStyle=orbTopLeft;
+
+  bgCtx.fillRect(
+    0,
+    0,
+    800,
+    800
+  );
+
+
+  bgCtx.strokeStyle=
+    'rgba(255,0,60,.12)';
+
+  bgCtx.lineWidth=3;
+
+
+  bgCtx.beginPath();
+
+  bgCtx.moveTo(
+    0,
+    250
+  );
+
+  bgCtx.lineTo(
+    150,
+    250
+  );
+
+  bgCtx.lineTo(
+    250,
+    350
+  );
+
+  bgCtx.lineTo(
+    W,
+    350
+  );
+
+  bgCtx.stroke();
+
+
+  bgCtx.beginPath();
+
+  bgCtx.moveTo(
+    W,
+    850
+  );
+
+  bgCtx.lineTo(
+    W-200,
+    850
+  );
+
+  bgCtx.lineTo(
+    W-300,
+    750
+  );
+
+  bgCtx.lineTo(
+    0,
+    750
+  );
+
+  bgCtx.stroke();
+
+
+  bgCtx.restore();
+
+
+  bgCtx.strokeStyle=
+    'rgba(255,0,60,.04)';
+
+  bgCtx.lineWidth=1;
+
+
+  bgCtx.beginPath();
+
+
+  for(
+    let i=0;
+    i<W;
+    i+=50
+  ){
+
+    bgCtx.moveTo(i,0);
+
+    bgCtx.lineTo(i,H);
+
+  }
+
+
+  for(
+    let j=0;
+    j<H;
+    j+=50
+  ){
+
+    bgCtx.moveTo(0,j);
+
+    bgCtx.lineTo(W,j);
+
+  }
+
+
+  bgCtx.stroke();
+
+
+  bgCtx.fillStyle=
+    'rgba(255,0,60,.35)';
+
+
+  for(
+    let i=50;
+    i<W;
+    i+=150
+  ){
+
+    for(
+      let j=50;
+      j<H;
+      j+=150
+    ){
+
+      bgCtx.fillRect(
+        i-3,
+        j-1,
+        7,
+        2
+      );
+
+      bgCtx.fillRect(
+        i-1,
+        j-3,
+        2,
+        7
+      );
+
+    }
+
+  }
+
+
+  bgCtx.fillStyle='#ff003c';
+
+  bgCtx.font=
+    "900 48px 'Orbitron',sans-serif";
+
+  bgCtx.textAlign='center';
+
+  bgCtx.textBaseline='middle';
+
+
+  const headerStr=
+    document
+      .getElementById('headerText')
+      .value
+      .trim()
+    ||'REPORT DETAILS';
+
+
+  bgCtx.fillText(
+    headerStr.toUpperCase(),
+    W/2,
+    GEO.headerY
+  );
+
+
+  bgCtx.fillRect(
+    W/2-200,
+    GEO.headerY+35,
+    400,
+    4
+  );
+
+
+  bgCtx.fillStyle='#fff';
+
+  bgCtx.fillRect(
+    W/2-100,
+    GEO.headerY+35,
+    50,
+    4
+  );
+
+
+  bgCtx.save();
+
+
+  drawAngledFrame(
+    bgCtx,
+    GEO.boxX,
+    GEO.boxY,
+    GEO.boxW,
+    GEO.boxH,
+    30
+  );
+
+
+  let boxGrad=
+    bgCtx.createLinearGradient(
+      GEO.boxX,
+      GEO.boxY,
+      GEO.boxX,
+      GEO.boxY+GEO.boxH
+    );
+
+
+  boxGrad.addColorStop(
+    0,
+    'rgba(60,0,10,.9)'
+  );
+
+  boxGrad.addColorStop(
+    1,
+    'rgba(5,0,1,.95)'
+  );
+
+
+  bgCtx.fillStyle=boxGrad;
+
+  bgCtx.fill();
+
+
+  bgCtx.lineWidth=2;
+
+  bgCtx.strokeStyle=
+    'rgba(255,0,60,.5)';
+
+  bgCtx.stroke();
+
+
+  bgCtx.strokeStyle=
+    'rgba(255,0,60,.9)';
+
+
+  drawHUDCorners(
+    bgCtx,
+    GEO.boxX-5,
+    GEO.boxY-5,
+    GEO.boxW+10,
+    GEO.boxH+10,
+    15,
+    2
+  );
+
+
+  bgCtx.restore();
+
+
+  const fX1=
+    (W-(GEO.photoW*2+GEO.photoGap))/2;
+
+
+  const fX2=
+    fX1+GEO.photoW+GEO.photoGap;
+
+
+  const slots=[
+
+    {
+      i:p1Img,
+      b:{
+        x:fX1,
+        y:GEO.photoY,
+        w:GEO.photoW,
+        h:GEO.photoH
+      },
+      s:mediaStates[0]
+    },
+
+    {
+      i:p2Img,
+      b:{
+        x:fX2,
+        y:GEO.photoY,
+        w:GEO.photoW,
+        h:GEO.photoH
+      },
+      s:mediaStates[1]
+    }
+
+  ];
+
+
+  slots.forEach(
+    (sl,idx)=>{
+
+      bgCtx.save();
+
+
+      drawAngledFrame(
+        bgCtx,
+        sl.b.x,
+        sl.b.y,
+        sl.b.w,
+        sl.b.h,
+        20
+      );
+
+
+      bgCtx.clip();
+
+
+      if(sl.i){
+
+        const baseScale=
+          Math.max(
+            sl.b.w/sl.i.width,
+            sl.b.h/sl.i.height
+          );
+
+
+        const s=
+          baseScale*(sl.s.z/100);
+
+
+        const sw=
+          sl.i.width*s;
+
+
+        const sh=
+          sl.i.height*s;
+
+
+        const exW=
+          sw-sl.b.w;
+
+
+        const exH=
+          sh-sl.b.h;
+
+
+        const dx=
+          sl.b.x-
+          exW*(sl.s.x/100);
+
+
+        const dy=
+          sl.b.y-
+          exH*(sl.s.y/100);
+
+
+        bgCtx.drawImage(
+          sl.i,
+          dx,
+          dy,
+          sw,
+          sh
+        );
+
+
+      }else{
+
+        bgCtx.fillStyle=
+          'rgba(15,0,4,.9)';
+
+
+        bgCtx.fillRect(
+          sl.b.x,
+          sl.b.y,
+          sl.b.w,
+          sl.b.h
+        );
+
+
+        bgCtx.strokeStyle=
+          'rgba(255,0,60,.1)';
+
+
+        bgCtx.lineWidth=2;
+
+
+        for(
+          let i=-sl.b.h;
+          i<sl.b.w;
+          i+=25
+        ){
+
+          bgCtx.beginPath();
+
+          bgCtx.moveTo(
+            sl.b.x+i,
+            sl.b.y
+          );
+
+          bgCtx.lineTo(
+            sl.b.x+i+sl.b.h,
+            sl.b.y+sl.b.h
+          );
+
+          bgCtx.stroke();
+
+        }
+
+
+        bgCtx.fillStyle=
+          'rgba(255,0,60,.6)';
+
+
+        bgCtx.font=
+          "700 20px 'Orbitron',sans-serif";
+
+
+        bgCtx.textAlign='center';
+
+
+        bgCtx.fillText(
+          `[ IMAGE ${idx+1} EMPTY ]`,
+          sl.b.x+sl.b.w/2,
+          sl.b.y+sl.b.h/2
+        );
+
+      }
+
+
+      bgCtx.restore();
+
+
+      bgCtx.save();
+
+
+      drawAngledFrame(
+        bgCtx,
+        sl.b.x,
+        sl.b.y,
+        sl.b.w,
+        sl.b.h,
+        20
+      );
+
+
+      bgCtx.strokeStyle='#ff003c';
+
+      bgCtx.lineWidth=3;
+
+      bgCtx.stroke();
+
+
+      bgCtx.restore();
+
+    }
+  );
+
+}
+
+
+/* ==============================================================
+   TYPOGRAPHY
+============================================================== */
+
+function drawTypography(){
+
+  const textRaw=
+    document
+      .getElementById('mainText')
+      .value
+      .trim();
+
+
+  if(!textRaw)return;
+
+
+  const fontFam=
+    document
+      .getElementById('fontSelect')
+      .value;
+
+
+  const hList=
+    document
+      .getElementById('hlText')
+      .value
+      .split(',')
+      .map(s=>s.trim())
+      .filter(Boolean);
+
+
+  const sList=
+    document
+      .getElementById('stText')
+      .value
+      .split(',')
+      .map(s=>s.trim())
+      .filter(Boolean);
+
+
+  let blocks=[
+    {
+      text:textRaw,
+      type:'normal'
+    }
+  ];
+
+
+  function applyHighlight(
+    list,
+    style
+  ){
+
+    list.forEach(
+      phrase=>{
+
+        let next=[];
+
+
+        blocks.forEach(
+          seg=>{
+
+            if(seg.type!=='normal'){
+
+              next.push(seg);
+
+              return;
+
+            }
+
+
+            let regex=
+              new RegExp(
+                `(${phrase.replace(
+                  /[-\/\\^$*+?.()|[\]{}]/g,
+                  '\\$&'
+                )})`,
+                'gi'
+              );
+
+
+            let parts=
+              seg.text.split(regex);
+
+
+            parts.forEach(
+              p=>{
+
+                if(
+                  p.toLowerCase()
+                  ===
+                  phrase.toLowerCase()
+                ){
+
+                  next.push({
+                    text:p,
+                    type:style
+                  });
+
+                }else if(p){
+
+                  next.push({
+                    text:p,
+                    type:'normal'
+                  });
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+
+        blocks=next;
+
+      }
+    );
+
+  }
+
+
+  applyHighlight(
+    hList,
+    'white'
+  );
+
+
+  applyHighlight(
+    sList,
+    'red'
+  );
+
+
+  let tokens=[];
+
+
+  blocks.forEach(
+    seg=>{
+
+      if(seg.type!=='normal'){
+
+        tokens.push({
+          t:seg.text,
+          style:seg.type,
+          isSpace:false
+        });
+
+      }else{
+
+        let regex=/(\s+|\S+)/g;
+
+        let match;
+
+
+        while(
+          (match=regex.exec(seg.text))
+          !==null
+        ){
+
+          if(match[0].length>0){
+
+            tokens.push({
+
+              t:match[0],
+
+              style:seg.type,
+
+              isSpace:/^\s+$/.test(
+                match[0]
+              )
+
+            });
+
+          }
+
+        }
+
+      }
+
+    }
+  );
+
+
+  ctx.save();
+
+
+  const maxW=
+    GEO.boxW-60;
+
+
+  const maxH=
+    GEO.boxH-40;
+
+
+  let fontSize=34;
+
+  let lineHeight=50;
+
+  let lines=[];
+
+  const padX=14;
+
+
+  while(fontSize>16){
+
+    lines=[];
+
+    let curLine=[];
+
+    let curW=0;
+
+
+    for(
+      let i=0;
+      i<tokens.length;
+      i++
+    ){
+
+      let tok=tokens[i];
+
+
+      ctx.font=
+        `700 ${fontSize}px '${fontFam}',sans-serif`;
+
+
+      let tw=
+        ctx.measureText(
+          tok.t
+        ).width;
+
+
+      let spaceNeeded=tw;
+
+
+      if(
+        !tok.isSpace &&
+        (
+          tok.style==='white' ||
+          tok.style==='red'
+        )
+      ){
+
+        spaceNeeded=
+          tw+(padX*2);
+
+      }
+
+
+      if(
+        !tok.isSpace &&
+        curW+spaceNeeded>maxW &&
+        curLine.length>0
+      ){
+
+        if(
+          curLine[
+            curLine.length-1
+          ].isSpace
+        ){
+
+          curW-=
+            curLine[
+              curLine.length-1
+            ].spaceNeeded;
+
+          curLine.pop();
+
+        }
+
+
+        lines.push({
+          words:curLine,
+          w:curW
+        });
+
+
+        curLine=[];
+
+        curW=0;
+
+      }
+
+
+      curLine.push({
+        ...tok,
+        w:tw,
+        spaceNeeded:spaceNeeded
+      });
+
+
+      curW+=spaceNeeded;
+
+    }
+
+
+    if(curLine.length>0){
+
+      if(
+        curLine[
+          curLine.length-1
+        ].isSpace
+      ){
+
+        curW-=
+          curLine[
+            curLine.length-1
+          ].spaceNeeded;
+
+        curLine.pop();
+
+      }
+
+
+      lines.push({
+        words:curLine,
+        w:curW
+      });
+
+    }
+
+
+    if(
+      lines.length*lineHeight<=maxH
+    )break;
+
+
+    fontSize-=2;
+
+    lineHeight-=3;
+
+  }
+
+
+  const totalH=
+    lines.length*lineHeight;
+
+
+  let startY=
+    GEO.boxY+
+    GEO.boxH/2-
+    totalH/2+
+    lineHeight/2;
+
+
+  ctx.textBaseline='middle';
+
+
+  const boxHeight=
+    fontSize+14;
+
+
+  lines.forEach(
+    (line,i)=>{
+
+      let x=
+        GEO.boxX+
+        GEO.boxW/2-
+        line.w/2;
+
+
+      let y=
+        startY+
+        i*lineHeight;
+
+
+      line.words.forEach(
+        item=>{
+
+          if(item.isSpace){
+
+            x+=item.spaceNeeded;
+
+            return;
+
+          }
+
+
+          ctx.font=
+            `700 ${fontSize}px '${fontFam}',sans-serif`;
+
+
+          if(
+            item.style==='white' ||
+            item.style==='red'
+          ){
+
+            if(item.style==='white'){
+
+              ctx.fillStyle='#fff';
+
+              ctx.shadowBlur=0;
+
+            }else{
+
+              ctx.fillStyle='#ff003c';
+
+              ctx.shadowColor='#ff003c';
+
+              ctx.shadowBlur=12;
+
+            }
+
+
+            drawRoundedRect(
+              ctx,
+              x,
+              y-boxHeight/2,
+              item.spaceNeeded,
+              boxHeight,
+              6
+            );
+
+
+            ctx.fill();
+
+
+            ctx.shadowBlur=0;
+
+
+            ctx.fillStyle=
+              item.style==='white'
+                ?'#000'
+                :'#fff';
+
+
+            ctx.fillText(
+              item.t,
+              x+padX,
+              y+2
+            );
+
+
+          }else{
+
+            ctx.fillStyle='#ffe6eb';
+
+            ctx.fillText(
+              item.t,
+              x,
+              y
+            );
+
+
+            if(
+              item.style==='strike' &&
+              !item.isSpace
+            ){
+
+              ctx.beginPath();
+
+              ctx.moveTo(
+                x,
+                y-2
+              );
+
+              ctx.lineTo(
+                x+item.w,
+                y-2
+              );
+
+              ctx.strokeStyle='#ff003c';
+
+              ctx.lineWidth=2;
+
+              ctx.stroke();
+
+            }
+
+          }
+
+
+          x+=item.spaceNeeded;
+
+        }
+      );
+
+    }
+  );
+
+
+  ctx.restore();
+
+}
+
+
+/* ==============================================================
+   FINAL RENDER
+============================================================== */
+
+function renderFull(){
+
+  drawAbstractBackground();
+
+
+  ctx.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  ctx.drawImage(
+    bgCanvas,
+    0,
+    0
+  );
+
+
+  ctx.drawImage(
+    paintCanvas,
+    0,
+    0
+  );
+
+
+  drawTypography();
+
+
+  if(
+    document
+      .getElementById('chkScan')
+      .checked
+  ){
+
+    ctx.save();
+
+
+    ctx.fillStyle=
+      'rgba(0,0,0,.25)';
+
+
+    for(
+      let i=0;
+      i<H;
+      i+=4
+    ){
+
+      ctx.fillRect(
+        0,
+        i,
+        W,
+        2
+      );
+
+    }
+
+
+    const vig=
+      ctx.createRadialGradient(
+        W/2,
+        H/2,
+        W/4,
+        W/2,
+        H/2,
+        W
+      );
+
+
+    vig.addColorStop(
+      0,
+      'transparent'
+    );
+
+
+    vig.addColorStop(
+      1,
+      'rgba(0,0,0,.65)'
+    );
+
+
+    ctx.fillStyle=vig;
+
+    ctx.fillRect(
+      0,
+      0,
+      W,
+      H
+    );
+
+
+    ctx.restore();
+
+  }
+
+
+  if(
+    document
+      .getElementById('chkLogo')
+      .checked &&
+    logoImg
+  ){
+
+    ctx.save();
+
+    ctx.globalAlpha=.35;
+
+
+    const sz=450;
+
+
+    ctx.drawImage(
+      logoImg,
+      (W-sz)/2,
+      GEO.photoY+
+      GEO.photoH/2-
+      sz/2,
+      sz,
+      sz
+    );
+
+
+    ctx.restore();
+
+  }
+
+
+  if(
+    document
+      .getElementById('chkStampTerm')
+      .checked
+  ){
+
+    drawStamp(
+      'TERMINATED',
+      '#ff003c',
+      W/2,
+      H/2+50,
+      -15
+    );
+
+  }
+
+
+  if(
+    document
+      .getElementById('chkSignature')
+      .checked
+  ){
+
+    drawSignature();
+
+  }
+
+}
+
+
+/* ==============================================================
+   SIGNATURE
+============================================================== */
+
+function drawSignature(){
+
+  const sigText=
+    document
+      .getElementById('sigText')
+      .value
+      .trim();
+
+
+  if(!sigText)return;
+
+
+  ctx.save();
+
+
+  ctx.font=
+    "700 48px 'Dancing Script',cursive";
+
+
+  ctx.textAlign='center';
+
+  ctx.textBaseline='middle';
+
+
+  const sigX=W/2;
+
+
+  const sigY=
+    GEO.photoY+
+    GEO.photoH+
+    20;
+
+
+  ctx.fillStyle='#ff3366';
+
+  ctx.shadowColor='#ff003c';
+
+  ctx.shadowBlur=15;
+
+
+  ctx.fillText(
+    sigText,
+    sigX,
+    sigY
+  );
+
+
+  ctx.shadowBlur=0;
+
+  ctx.fillStyle='#fff';
+
+
+  ctx.fillText(
+    sigText,
+    sigX,
+    sigY
+  );
+
+
+  ctx.restore();
+
+}
+
+
+/* ==============================================================
+   STAMP
+============================================================== */
+
+function drawStamp(
+  text,
+  color,
+  cx,
+  cy,
+  angleDeg
+){
+
+  ctx.save();
+
+
+  ctx.translate(
+    cx,
+    cy
+  );
+
+
+  ctx.rotate(
+    angleDeg*Math.PI/180
+  );
+
+
+  ctx.font=
+    "900 80px 'Orbitron',sans-serif";
+
+
+  ctx.textAlign='center';
+
+  ctx.textBaseline='middle';
+
+
+  const tw=
+    ctx.measureText(text).width;
+
+
+  ctx.strokeStyle=color;
+
+  ctx.lineWidth=8;
+
+
+  ctx.strokeRect(
+    -tw/2-30,
+    -50,
+    tw+60,
+    100
+  );
+
+
+  ctx.lineWidth=2;
+
+
+  ctx.strokeRect(
+    -tw/2-20,
+    -40,
+    tw+40,
+    80
+  );
+
+
+  ctx.fillStyle=color;
+
+  ctx.globalAlpha=.8;
+
+
+  if(color==='#ff003c'){
+
+    ctx.shadowColor='#ff003c';
+
+    ctx.shadowBlur=20;
+
+  }
+
+
+  ctx.fillText(
+    text,
+    0,
+    5
+  );
+
+
+  ctx.restore();
+
+}
+
+
+/* ==============================================================
+   EXPORT
+============================================================== */
+
+function exportCard(){
+
+  if(!p1Img&&!p2Img){
+
+    logMsg(
+      'ERROR: Upload an image first.'
+    );
+
+    return;
+
+  }
+
+
+  logMsg(
+    'Saving Image...'
+  );
+
+
+  queueRender();
+
+
+  setTimeout(()=>{
+
+    const a=
+      document.createElement('a');
+
+
+    a.download=
+      `BCT_REPORT_${Date.now()}.jpg`;
+
+
+    a.href=
+      canvas.toDataURL(
+        'image/jpeg',
+        1
+      );
+
+
+    a.click();
+
+
+    logMsg(
+      'Image downloaded successfully!'
+    );
+
+  },300);
+
+}
+
+
+logMsg(
+  'Ready to generate card.'
+);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2566 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<title>BCT Caption Generator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --bg:#000;
+  --panel:#0b0b0b;
+  --panel2:#101010;
+
+  --red:#e5092f;
+  --red2:#ff1745;
+
+  --red-soft:rgba(229,9,47,.10);
+
+  --border:rgba(255,255,255,.08);
+
+  --text:#f1f1f1;
+  --muted:#777;
+
+  --green:#53d769;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  min-height:100%;
+  background:#000;
+}
+
+body{
+  color:var(--text);
+  font-family:Rajdhani,sans-serif;
+  overflow-x:hidden;
+}
+
+
+/* ==========================================================
+   BACKGROUND
+========================================================== */
+
+body:before{
+  content:"";
+
+  position:fixed;
+  inset:0;
+
+  z-index:-3;
+
+  pointer-events:none;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.015) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.015) 1px,
+      transparent 1px
+    );
+
+  background-size:50px 50px;
+}
+
+
+body:after{
+  content:"";
+
+  position:fixed;
+
+  left:0;
+  top:-10px;
+
+  width:100%;
+  height:1px;
+
+  z-index:-2;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(229,9,47,.3),
+      transparent
+    );
+
+  animation:scan 9s linear infinite;
+}
+
+
+@keyframes scan{
+
+  0%{
+    top:-10px;
+    opacity:0;
+  }
+
+  10%{
+    opacity:1;
+  }
+
+  90%{
+    opacity:.5;
+  }
+
+  100%{
+    top:100vh;
+    opacity:0;
+  }
+
+}
+
+
+/* ==========================================================
+   APP
+========================================================== */
+
+.app{
+  width:100%;
+  max-width:1050px;
+
+  min-height:100vh;
+
+  margin:auto;
+
+  padding:
+    0
+    18px
+    30px;
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.header{
+  height:78px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  border-bottom:
+    1px solid var(--border);
+
+  position:relative;
+}
+
+
+.header:after{
+  content:"";
+
+  position:absolute;
+
+  bottom:-1px;
+  left:0;
+
+  width:100px;
+  height:1px;
+
+  background:var(--red);
+
+  box-shadow:
+    0 0 10px
+    rgba(229,9,47,.5);
+}
+
+
+.brand{
+  display:flex;
+  align-items:center;
+
+  gap:11px;
+}
+
+
+.brand img{
+  width:43px;
+  height:43px;
+
+  object-fit:contain;
+}
+
+
+.brand-name{
+  font-family:Orbitron,sans-serif;
+
+  font-size:13px;
+
+  font-weight:800;
+
+  letter-spacing:1.2px;
+}
+
+
+.brand-sub{
+  margin-top:5px;
+
+  color:#666;
+
+  font-family:
+    Share Tech Mono,
+    monospace;
+
+  font-size:8px;
+
+  letter-spacing:2px;
+}
+
+
+.status{
+  display:flex;
+  align-items:center;
+
+  gap:7px;
+
+  color:#666;
+
+  font-family:
+    Share Tech Mono,
+    monospace;
+
+  font-size:8px;
+
+  letter-spacing:1.5px;
+}
+
+
+.status-dot{
+  width:6px;
+  height:6px;
+
+  border-radius:50%;
+
+  background:var(--red);
+
+  box-shadow:
+    0 0 9px
+    rgba(229,9,47,.7);
+}
+
+
+/* ==========================================================
+   MAIN
+========================================================== */
+
+.main{
+  padding-top:24px;
+}
+
+
+.section-title{
+  display:flex;
+  align-items:center;
+
+  gap:10px;
+
+  margin-bottom:12px;
+
+  color:#888;
+
+  font-family:
+    Share Tech Mono,
+    monospace;
+
+  font-size:9px;
+
+  letter-spacing:2px;
+}
+
+
+.section-title:before{
+  content:"";
+
+  width:3px;
+  height:12px;
+
+  background:var(--red);
+}
+
+
+.section-title:after{
+  content:"";
+
+  height:1px;
+
+  flex:1;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.08),
+      transparent
+    );
+}
+
+
+/* ==========================================================
+   PANEL
+========================================================== */
+
+.panel{
+  background:
+    linear-gradient(
+      180deg,
+      #0c0c0c,
+      #080808
+    );
+
+  border:
+    1px solid var(--border);
+
+  border-radius:13px;
+
+  padding:16px;
+
+  margin-bottom:14px;
+}
+
+
+/* ==========================================================
+   FIELD
+========================================================== */
+
+.field{
+  margin-bottom:14px;
+}
+
+
+.label{
+  display:block;
+
+  margin-bottom:6px;
+
+  color:#777;
+
+  font-family:
+    Share Tech Mono,
+    monospace;
+
+  font-size:8px;
+
+  letter-spacing:1.4px;
+
+  text-transform:uppercase;
+}
+
+
+/* ==========================================================
+   MODERN SMART SELECT
+========================================================== */
+
+.custom-select{
+  position:relative;
+
+  width:100%;
+}
+
+
+.select-button{
+  position:relative;
+
+  width:100%;
+  min-height:54px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:
+    0
+    10px
+    0
+    16px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.09);
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.008)
+    ),
+    #090909;
+
+  color:#f3f3f3;
+
+  font-family:
+    Rajdhani,
+    sans-serif;
+
+  font-size:15px;
+
+  font-weight:700;
+
+  letter-spacing:.2px;
+
+  cursor:pointer;
+
+  transition:
+    border-color .25s ease,
+    background .25s ease,
+    box-shadow .25s ease,
+    transform .18s ease;
+}
+
+
+.select-button:hover{
+
+  border-color:
+    rgba(229,9,47,.38);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(229,9,47,.055),
+      rgba(255,255,255,.012)
+    ),
+    #090909;
+
+  box-shadow:
+    0 8px 28px
+    rgba(0,0,0,.35),
+
+    inset 0 0 0 1px
+    rgba(229,9,47,.025);
+}
+
+
+.select-button:active{
+  transform:scale(.992);
+}
+
+
+.select-button.open{
+
+  border-color:
+    rgba(229,9,47,.52);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(229,9,47,.075),
+      rgba(255,255,255,.01)
+    ),
+    #090909;
+
+  box-shadow:
+    0 10px 32px
+    rgba(0,0,0,.45),
+
+    0 0 0 3px
+    rgba(229,9,47,.045);
+}
+
+
+.select-button > span:first-child{
+
+  overflow:hidden;
+
+  white-space:nowrap;
+
+  text-overflow:ellipsis;
+}
+
+
+/* ==========================================================
+   ARROW
+========================================================== */
+
+.arrow{
+
+  position:relative;
+
+  flex:0 0 34px;
+
+  width:34px;
+  height:34px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  margin-left:12px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.10);
+
+  border-radius:9px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.055),
+      rgba(255,255,255,.012)
+    );
+
+  color:#a9a9a9;
+
+  font-size:0;
+
+  transition:
+    transform .3s
+      cubic-bezier(.4,0,.2,1),
+
+    border-color .25s ease,
+
+    background .25s ease,
+
+    color .25s ease;
+}
+
+
+/* CSS CHEVRON */
+
+.arrow:before{
+
+  content:"";
+
+  width:7px;
+  height:7px;
+
+  border-right:
+    1.7px solid
+    currentColor;
+
+  border-bottom:
+    1.7px solid
+    currentColor;
+
+  transform:
+    rotate(45deg)
+    translate(-1px,-1px);
+
+  transition:
+    transform .3s
+    cubic-bezier(.4,0,.2,1);
+}
+
+
+/* RED ACCENT */
+
+.arrow:after{
+
+  content:"";
+
+  position:absolute;
+
+  right:-1px;
+  top:7px;
+
+  width:2px;
+  height:18px;
+
+  border-radius:5px;
+
+  background:transparent;
+
+  transition:.25s;
+}
+
+
+.select-button:hover .arrow{
+
+  color:#ddd;
+
+  border-color:
+    rgba(229,9,47,.28);
+}
+
+
+.select-button:hover .arrow:after{
+
+  background:
+    rgba(229,9,47,.55);
+}
+
+
+.select-button.open .arrow{
+
+  color:#fff;
+
+  border-color:
+    rgba(229,9,47,.55);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(229,9,47,.16),
+      rgba(229,9,47,.035)
+    );
+
+  transform:rotate(0deg);
+}
+
+
+.select-button.open
+.arrow:before{
+
+  transform:
+    rotate(225deg)
+    translate(-1px,-1px);
+}
+
+
+.select-button.open
+.arrow:after{
+
+  background:var(--red);
+
+  box-shadow:
+    0 0 8px
+    rgba(229,9,47,.35);
+}
+
+
+/* ==========================================================
+   DROPDOWN
+========================================================== */
+
+.options{
+
+  position:absolute;
+
+  top:calc(100% + 8px);
+
+  left:0;
+  right:0;
+
+  z-index:100;
+
+  padding:6px;
+
+  display:none;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.045),
+      rgba(255,255,255,.008)
+    ),
+    #080808;
+
+  border:
+    1px solid
+    rgba(229,9,47,.25);
+
+  border-radius:12px;
+
+  box-shadow:
+    0 20px 50px
+    rgba(0,0,0,.75),
+
+    0 0 0 1px
+    rgba(255,255,255,.02);
+
+  backdrop-filter:blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+}
+
+
+.options.show{
+
+  display:block;
+
+  animation:
+    smartDropdown .2s
+    cubic-bezier(.2,.8,.2,1);
+}
+
+
+@keyframes smartDropdown{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(-7px)
+      scale(.985);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+/* ==========================================================
+   OPTION
+========================================================== */
+
+.option{
+
+  position:relative;
+
+  min-height:42px;
+
+  display:flex;
+  align-items:center;
+
+  padding:
+    0
+    12px;
+
+  margin:2px 0;
+
+  border-radius:8px;
+
+  color:#858585;
+
+  font-size:13px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:
+    background .18s ease,
+    color .18s ease,
+    padding-left .18s ease;
+}
+
+
+.option:hover{
+
+  padding-left:16px;
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(229,9,47,.12),
+      rgba(229,9,47,.025)
+    );
+}
+
+
+.option.selected{
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(229,9,47,.14),
+      rgba(229,9,47,.035)
+    );
+}
+
+
+.option.selected:before{
+
+  content:"";
+
+  width:3px;
+  height:18px;
+
+  position:absolute;
+
+  left:0;
+
+  border-radius:
+    0 4px 4px 0;
+
+  background:var(--red);
+
+  box-shadow:
+    0 0 8px
+    rgba(229,9,47,.35);
+}
+
+
+.option.selected:after{
+
+  content:"✓";
+
+  margin-left:auto;
+
+  width:22px;
+  height:22px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:
+    1px solid
+    rgba(229,9,47,.3);
+
+  border-radius:6px;
+
+  color:var(--red);
+
+  font-size:10px;
+
+  background:
+    rgba(229,9,47,.06);
+}
+
+
+/* ==========================================================
+   INPUT
+========================================================== */
+
+.input{
+
+  width:100%;
+  height:54px;
+
+  padding:
+    0
+    16px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.09);
+
+  border-radius:12px;
+
+  outline:none;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.025),
+      rgba(255,255,255,.005)
+    ),
+    #090909;
+
+  color:#fff;
+
+  font-family:
+    Rajdhani,
+    sans-serif;
+
+  font-size:14px;
+
+  font-weight:600;
+
+  transition:.25s;
+}
+
+
+.input:focus{
+
+  border-color:
+    rgba(229,9,47,.5);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(229,9,47,.06);
+}
+
+
+.input::placeholder{
+  color:#444;
+}
+
+
+/* ==========================================================
+   SECTION BUTTONS
+========================================================== */
+
+.section-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  gap:7px;
+}
+
+
+.section-btn{
+
+  position:relative;
+
+  min-height:44px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.07);
+
+  border-radius:8px;
+
+  background:#080808;
+
+  color:#666;
+
+  font-family:
+    Orbitron,
+    sans-serif;
+
+  font-size:10px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+
+.section-btn:before{
+
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:0;
+
+  width:8px;
+  height:8px;
+
+  border-top:
+    1px solid
+    rgba(229,9,47,.35);
+
+  border-left:
+    1px solid
+    rgba(229,9,47,.35);
+}
+
+
+.section-btn:after{
+
+  content:"";
+
+  position:absolute;
+
+  right:0;
+  bottom:0;
+
+  width:8px;
+  height:8px;
+
+  border-right:
+    1px solid
+    rgba(229,9,47,.35);
+
+  border-bottom:
+    1px solid
+    rgba(229,9,47,.35);
+}
+
+
+.section-btn:hover{
+
+  color:#ddd;
+
+  border-color:
+    rgba(229,9,47,.25);
+}
+
+
+.section-btn.active{
+
+  color:#fff;
+
+  border-color:
+    rgba(229,9,47,.55);
+
+  background:
+    rgba(229,9,47,.11);
+
+  box-shadow:
+    inset 0 0 15px
+    rgba(229,9,47,.05);
+}
+
+
+.section-btn.active:before,
+.section-btn.active:after{
+
+  border-color:
+    var(--red);
+}
+
+
+/* ==========================================================
+   RESTRICTED
+========================================================== */
+
+.restricted-row{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  min-height:53px;
+
+  padding:
+    9px
+    12px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.07);
+
+  border-radius:9px;
+
+  background:#080808;
+}
+
+
+.restricted-info{
+
+  display:flex;
+
+  flex-direction:column;
+}
+
+
+.restricted-title{
+
+  font-size:13px;
+
+  font-weight:700;
+}
+
+
+.restricted-desc{
+
+  margin-top:2px;
+
+  color:#555;
+
+  font-size:9px;
+}
+
+
+/* TOGGLE */
+
+.toggle{
+
+  width:45px;
+  height:25px;
+
+  position:relative;
+
+  border:
+    1px solid
+    #333;
+
+  border-radius:20px;
+
+  background:#151515;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+
+.toggle:before{
+
+  content:"";
+
+  position:absolute;
+
+  width:17px;
+  height:17px;
+
+  top:3px;
+  left:3px;
+
+  border-radius:50%;
+
+  background:#555;
+
+  transition:.2s;
+}
+
+
+.toggle.on{
+
+  background:
+    rgba(229,9,47,.18);
+
+  border-color:
+    rgba(229,9,47,.5);
+}
+
+
+.toggle.on:before{
+
+  left:23px;
+
+  background:var(--red);
+
+  box-shadow:
+    0 0 9px
+    rgba(229,9,47,.5);
+}
+
+
+/* ==========================================================
+   OUTPUT
+========================================================== */
+
+.output-panel{
+  position:relative;
+}
+
+
+.output{
+
+  width:100%;
+
+  min-height:300px;
+
+  padding:16px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius:10px;
+
+  background:#050505;
+
+  color:#ddd;
+
+  font-family:
+    Rajdhani,
+    sans-serif;
+
+  font-size:15px;
+
+  line-height:1.65;
+
+  white-space:pre-wrap;
+
+  word-break:break-word;
+
+  outline:none;
+
+  transition:.2s;
+}
+
+
+.output:focus{
+
+  border-color:
+    rgba(229,9,47,.35);
+}
+
+
+/* ==========================================================
+   RESTRICTED WORD
+========================================================== */
+
+.restricted-word{
+
+  color:#ff5370;
+
+  text-decoration:
+    underline;
+
+  text-decoration-color:
+    rgba(229,9,47,.4);
+
+  text-underline-offset:3px;
+}
+
+
+/* ==========================================================
+   NOTICE
+========================================================== */
+
+.notice{
+
+  display:none;
+
+  margin-top:9px;
+
+  padding:
+    9px
+    11px;
+
+  border-left:
+    2px solid
+    var(--red);
+
+  background:
+    rgba(229,9,47,.06);
+
+  color:#888;
+
+  font-family:
+    Share Tech Mono,
+    monospace;
+
+  font-size:8px;
+
+  line-height:1.6;
+}
+
+
+.notice.show{
+  display:block;
+}
+
+
+/* ==========================================================
+   ACTIONS
+========================================================== */
+
+.actions{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:8px;
+
+  margin-top:10px;
+}
+
+
+.btn{
+
+  min-height:46px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius:8px;
+
+  background:#090909;
+
+  color:#aaa;
+
+  font-family:
+    Orbitron,
+    sans-serif;
+
+  font-size:9px;
+
+  font-weight:700;
+
+  letter-spacing:.8px;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+
+.btn:hover{
+
+  color:#fff;
+
+  border-color:
+    rgba(229,9,47,.35);
+}
+
+
+.btn.primary{
+
+  color:#fff;
+
+  border-color:
+    rgba(229,9,47,.55);
+
+  background:
+    linear-gradient(
+      135deg,
+      #430610,
+      #92071f
+    );
+}
+
+
+.btn.primary:hover{
+
+  border-color:
+    var(--red);
+}
+
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.footer{
+
+  padding:
+    20px
+    0
+    5px;
+
+  text-align:center;
+
+  color:#3f3f3f;
+
+  font-family:
+    Share Tech Mono,
+    monospace;
+
+  font-size:8px;
+
+  letter-spacing:1px;
+}
+
+
+.footer strong{
+  color:#666;
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media(max-width:600px){
+
+  .app{
+
+    padding:
+      0
+      12px
+      24px;
+  }
+
+
+  .header{
+    height:70px;
+  }
+
+
+  .brand img{
+
+    width:38px;
+    height:38px;
+  }
+
+
+  .brand-name{
+
+    font-size:10px;
+
+    letter-spacing:.8px;
+  }
+
+
+  .brand-sub{
+
+    font-size:7px;
+  }
+
+
+  .status{
+
+    font-size:7px;
+  }
+
+
+  .main{
+
+    padding-top:17px;
+  }
+
+
+  .panel{
+
+    padding:12px;
+  }
+
+
+  .select-button{
+
+    min-height:52px;
+
+    border-radius:11px;
+  }
+
+
+  .arrow{
+
+    flex-basis:32px;
+
+    width:32px;
+    height:32px;
+
+    border-radius:8px;
+  }
+
+
+  .options{
+
+    border-radius:11px;
+  }
+
+
+  .option{
+
+    min-height:43px;
+  }
+
+
+  .section-grid{
+
+    grid-template-columns:
+      repeat(5,1fr);
+
+    gap:5px;
+  }
+
+
+  .section-btn{
+
+    min-height:40px;
+
+    font-size:9px;
+  }
+
+
+  .input{
+
+    height:52px;
+
+    border-radius:11px;
+  }
+
+
+  .output{
+
+    min-height:330px;
+
+    font-size:14px;
+  }
+
+}
+
+
+@media(max-width:370px){
+
+  .section-grid{
+
+    grid-template-columns:
+      repeat(5,1fr);
+  }
+
+
+  .section-btn{
+
+    font-size:8px;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+  <!-- ======================================================
+       HEADER
+  ======================================================= -->
+
+  <header class="header">
+
+    <div class="brand">
+
+      <img
+        src="https://i.ibb.co/rRSZ1cz7/20260928-231500.png"
+        alt="BCT"
+      >
+
+      <div>
+
+        <div class="brand-name">
+          BANGLADESH CYBER TRIBE
+        </div>
+
+        <div class="brand-sub">
+          CAPTION GENERATOR
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="status">
+
+      <span class="status-"></span>
+
+     
+</div>
+
+  </header>
+
+
+  <!-- ======================================================
+       MAIN
+  ======================================================= -->
+
+  <main class="main">
+
+
+    <!-- ====================================================
+         REPORT REASON
+    ===================================================== -->
+
+    <div class="panel">
+
+      <div class="section-title">
+        REPORT REASON
+      </div>
+
+
+      <!-- REASON -->
+
+      <div class="field">
+
+        <label class="label">
+          Select Reason
+        </label>
+
+
+        <div class="custom-select">
+
+          <button
+            class="select-button"
+            id="reasonButton"
+            type="button"
+          >
+
+            <span id="reasonText">
+              অশ্লীলতা
+            </span>
+
+            <span class="arrow"></span>
+
+          </button>
+
+
+          <div
+            class="options"
+            id="reasonOptions"
+          >
+
+            <div
+              class="option selected"
+              data-value="obscenity"
+            >
+              অশ্লীলতা
+            </div>
+
+
+            <div
+              class="option"
+              data-value="atheism"
+            >
+              নাস্তিকতা
+            </div>
+
+
+            <div
+              class="option"
+              data-value="gambling"
+            >
+              জুয়া
+            </div>
+
+
+            <div
+              class="option"
+              data-value="scam"
+            >
+              স্ক্যাম
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PLATFORM -->
+
+      <div class="field">
+
+        <label class="label">
+          Platform
+        </label>
+
+
+        <div class="custom-select">
+
+          <button
+            class="select-button"
+            id="platformButton"
+            type="button"
+          >
+
+            <span id="platformText">
+              Facebook
+            </span>
+
+            <span class="arrow"></span>
+
+          </button>
+
+
+          <div
+            class="options"
+            id="platformOptions"
+          >
+
+            <div
+              class="option selected"
+              data-value="Facebook"
+            >
+              Facebook
+            </div>
+
+
+            <div
+              class="option"
+              data-value="YouTube"
+            >
+              YouTube
+            </div>
+
+
+            <div
+              class="option"
+              data-value="X"
+            >
+              X
+            </div>
+
+
+            <div
+              class="option"
+              data-value="Instagram"
+            >
+              Instagram
+            </div>
+
+
+            <div
+              class="option"
+              data-value="TikTok"
+            >
+              TikTok
+            </div>
+
+
+            <div
+              class="option"
+              data-value="Telegram"
+            >
+              Telegram
+            </div>
+
+
+            <div
+              class="option"
+              data-value="Blogger"
+            >
+              Blogger
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- TARGET -->
+
+      <div class="field">
+
+        <label class="label">
+          Target Type
+        </label>
+
+
+        <div class="custom-select">
+
+          <button
+            class="select-button"
+            id="targetButton"
+            type="button"
+          >
+
+            <span id="targetText">
+              Account
+            </span>
+
+            <span class="arrow"></span>
+
+          </button>
+
+
+          <div
+            class="options"
+            id="targetOptions"
+          >
+
+            <div
+              class="option selected"
+              data-value="Account"
+            >
+              Account
+            </div>
+
+
+            <div
+              class="option"
+              data-value="Page"
+            >
+              Page
+            </div>
+
+
+            <div
+              class="option"
+              data-value="Channel"
+            >
+              Channel
+            </div>
+
+
+            <div
+              class="option"
+              data-value="Post"
+            >
+              Post
+            </div>
+
+
+            <div
+              class="option"
+              data-value="Site"
+            >
+              Site
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ====================================================
+         POST INFORMATION
+    ===================================================== -->
+
+    <div class="panel">
+
+      <div class="section-title">
+        POST INFORMATION
+      </div>
+
+
+      <div class="field">
+
+        <label class="label">
+          Remove By
+        </label>
+
+
+        <input
+          id="removeBy"
+          class="input"
+          type="text"
+          placeholder="Enter remover name"
+        >
+
+      </div>
+
+
+      <div
+        class="field"
+        style="margin-bottom:0"
+      >
+
+        <label class="label">
+          Section
+        </label>
+
+
+        <div class="section-grid">
+
+          <button
+            class="section-btn active"
+            data-section="1"
+          >
+            01
+          </button>
+
+          <button
+            class="section-btn"
+            data-section="2"
+          >
+            02
+          </button>
+
+          <button
+            class="section-btn"
+            data-section="3"
+          >
+            03
+          </button>
+
+          <button
+            class="section-btn"
+            data-section="4"
+          >
+            04
+          </button>
+
+          <button
+            class="section-btn"
+            data-section="5"
+          >
+            05
+          </button>
+
+          <button
+            class="section-btn"
+            data-section="6"
+          >
+            06
+          </button>
+
+          <button
+            class="section-btn"
+            data-section="7"
+          >
+            07
+          </button>
+
+          <button
+            class="section-btn"
+            data-section="8"
+          >
+            08
+          </button>
+
+          <button
+            class="section-btn"
+            data-section="9"
+          >
+            09
+          </button>
+
+          <button
+            class="section-btn"
+            data-section="10"
+          >
+            10
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ====================================================
+         RESTRICTED
+    ===================================================== -->
+
+    <div class="panel">
+
+      <div class="section-title">
+        CAPTION MODE
+      </div>
+
+
+      <div class="restricted-row">
+
+        <div class="restricted-info">
+
+          <div class="restricted-title">
+            Restricted
+          </div>
+
+          <div class="restricted-desc">
+            Sensitive-word warning mode
+          </div>
+
+        </div>
+
+
+        <button
+          id="restrictedToggle"
+          class="toggle on"
+          type="button"
+          aria-label="Restricted mode"
+        ></button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ====================================================
+         GENERATED CAPTION
+    ===================================================== -->
+
+    <div class="panel output-panel">
+
+      <div class="section-title">
+        GENERATED CAPTION
+      </div>
+
+
+      <div
+        id="output"
+        class="output"
+        contenteditable="true"
+        spellcheck="false"
+      ></div>
+
+
+      <div
+        id="restrictedNotice"
+        class="notice"
+      >
+        Restricted mode is ON. Sensitive words are highlighted for review.
+      </div>
+
+
+      <div class="actions">
+
+        <button
+          class="btn primary"
+          id="copyBtn"
+          type="button"
+        >
+          COPY CAPTION
+        </button>
+
+
+        <button
+          class="btn"
+          id="regenerateBtn"
+          type="button"
+        >
+          REGENERATE
+        </button>
+
+      </div>
+
+    </div>
+
+
+  </main>
+
+
+  <!-- ======================================================
+       FOOTER
+  ======================================================= -->
+
+  <footer class="footer">
+
+    Developed By:
+    <strong>NexFly Org</strong>
+
+  </footer>
+
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   STATE
+========================================================== */
+
+const state = {
+
+  reason:"obscenity",
+
+  platform:"Facebook",
+
+  target:"Account",
+
+  section:"1",
+
+  restricted:true
+
+};
+
+
+/* ==========================================================
+   REASON PHRASES
+========================================================== */
+
+const reasonText = {
+
+  obscenity:{
+    phrase:"অশ্লীলতা ছড়ানোর অভিযোগে"
+  },
+
+  atheism:{
+    phrase:"নাস্তিক্যবাদকে প্রমোট করার অভিযোগে"
+  },
+
+  gambling:{
+    phrase:"জুয়া প্রমোট করার অভিযোগে"
+  },
+
+  scam:{
+    phrase:"স্ক্যামিং করার অভিযোগে"
+  }
+
+};
+
+
+/* ==========================================================
+   SELECT SYSTEM
+========================================================== */
+
+function setupSelect(
+  buttonId,
+  optionsId,
+  textId,
+  stateKey
+){
+
+  const button =
+    document.getElementById(buttonId);
+
+  const options =
+    document.getElementById(optionsId);
+
+  const text =
+    document.getElementById(textId);
+
+
+  button.addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+
+      document
+        .querySelectorAll(".options.show")
+        .forEach(element => {
+
+          if(element !== options){
+
+            element.classList.remove("show");
+
+            element
+              .parentElement
+              .querySelector(".select-button")
+              .classList.remove("open");
+
+          }
+
+        });
+
+
+      options.classList.toggle("show");
+
+      button.classList.toggle(
+        "open",
+        options.classList.contains("show")
+      );
+
+    }
+  );
+
+
+  options
+    .querySelectorAll(".option")
+    .forEach(option => {
+
+      option.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+
+          state[stateKey] =
+            option.dataset.value;
+
+
+          text.innerText =
+            option.innerText;
+
+
+          options
+            .querySelectorAll(".option")
+            .forEach(item => {
+
+              item.classList.remove(
+                "selected"
+              );
+
+            });
+
+
+          option.classList.add(
+            "selected"
+          );
+
+
+          options.classList.remove(
+            "show"
+          );
+
+
+          button.classList.remove(
+            "open"
+          );
+
+
+          generateCaption();
+
+        }
+      );
+
+    });
+
+}
+
+
+/* ==========================================================
+   INITIALIZE SELECTS
+========================================================== */
+
+setupSelect(
+  "reasonButton",
+  "reasonOptions",
+  "reasonText",
+  "reason"
+);
+
+
+setupSelect(
+  "platformButton",
+  "platformOptions",
+  "platformText",
+  "platform"
+);
+
+
+setupSelect(
+  "targetButton",
+  "targetOptions",
+  "targetText",
+  "target"
+);
+
+
+/* ==========================================================
+   SECTION BUTTONS
+========================================================== */
+
+document
+  .querySelectorAll(".section-btn")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        document
+          .querySelectorAll(".section-btn")
+          .forEach(item => {
+
+            item.classList.remove(
+              "active"
+            );
+
+          });
+
+
+        button.classList.add(
+          "active"
+        );
+
+
+        state.section =
+          button.dataset.section;
+
+
+        generateCaption();
+
+      }
+    );
+
+  });
+
+
+/* ==========================================================
+   RESTRICTED TOGGLE
+========================================================== */
+
+const restrictedToggle =
+  document.getElementById(
+    "restrictedToggle"
+  );
+
+
+restrictedToggle.addEventListener(
+  "click",
+  () => {
+
+    state.restricted =
+      !state.restricted;
+
+
+    restrictedToggle.classList.toggle(
+      "on",
+      state.restricted
+    );
+
+
+    generateCaption();
+
+  }
+);
+
+
+/* ==========================================================
+   BUILD CAPTION
+========================================================== */
+
+function buildCaption(){
+
+  const reason =
+    reasonText[state.reason].phrase;
+
+
+  const removeBy =
+    document
+      .getElementById("removeBy")
+      .value
+      .trim();
+
+
+  return `আস-সালামু আলাইকুম✨
+
+প্রতিনিয়ত ${reason} একটি ${state.platform} ${state.target} Team BCT-এর পক্ষ থেকে সফলভাবে রিমুভ করা হয়েছে।
+
+Remove By: ${removeBy}
+Section: ${state.section}
+
+Stay With: Bangladesh Cyber Tribe - BCT
+
+#Team_BCT
+#bangladesh_cyber_tribe
+#one_ummah_One_tribe`;
+
+}
+
+
+/* ==========================================================
+   ESCAPE HTML
+========================================================== */
+
+function escapeHTML(text){
+
+  return text
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* ==========================================================
+   SENSITIVE WORD HIGHLIGHT
+========================================================== */
+
+const sensitiveWords = [
+
+  "অশ্লীলতা",
+
+  "নাস্তিকতা",
+
+  "নাস্তিক্যবাদ",
+
+  "জুয়া",
+
+  "স্ক্যাম",
+
+  "রিমুভ",
+
+  "রিমুভ করা হয়েছে"
+
+];
+
+
+function highlightSensitive(text){
+
+  let html =
+    escapeHTML(text);
+
+
+  if(!state.restricted){
+
+    return html;
+
+  }
+
+
+  sensitiveWords
+    .sort(
+      (a,b) =>
+        b.length - a.length
+    )
+    .forEach(word => {
+
+      const escaped =
+        word.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          "\\$&"
+        );
+
+
+      html =
+        html.replace(
+          new RegExp(
+            escaped,
+            "g"
+          ),
+
+          `<span class="restricted-word">${word}</span>`
+        );
+
+    });
+
+
+  return html;
+
+}
+
+
+/* ==========================================================
+   GENERATE CAPTION
+========================================================== */
+
+function generateCaption(){
+
+  const caption =
+    buildCaption();
+
+
+  const output =
+    document.getElementById(
+      "output"
+    );
+
+
+  output.innerHTML =
+    highlightSensitive(
+      caption
+    );
+
+
+  document
+    .getElementById(
+      "restrictedNotice"
+    )
+    .classList.toggle(
+      "show",
+      state.restricted
+    );
+
+}
+
+
+/* ==========================================================
+   REMOVE BY INPUT
+========================================================== */
+
+document
+  .getElementById("removeBy")
+  .addEventListener(
+    "input",
+    generateCaption
+  );
+
+
+/* ==========================================================
+   COPY
+========================================================== */
+
+document
+  .getElementById("copyBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      const text =
+        buildCaption();
+
+
+      try{
+
+        await navigator
+          .clipboard
+          .writeText(text);
+
+
+        const button =
+          document.getElementById(
+            "copyBtn"
+          );
+
+
+        const oldText =
+          button.innerText;
+
+
+        button.innerText =
+          "COPIED ✓";
+
+
+        setTimeout(
+          () => {
+
+            button.innerText =
+              oldText;
+
+          },
+          1400
+        );
+
+
+      }catch(error){
+
+        const range =
+          document.createRange();
+
+
+        range.selectNodeContents(
+          document.getElementById(
+            "output"
+          )
+        );
+
+
+        const selection =
+          window.getSelection();
+
+
+        selection.removeAllRanges();
+
+        selection.addRange(range);
+
+      }
+
+    }
+  );
+
+
+/* ==========================================================
+   REGENERATE
+========================================================== */
+
+document
+  .getElementById("regenerateBtn")
+  .addEventListener(
+    "click",
+    generateCaption
+  );
+
+
+/* ==========================================================
+   CLOSE DROPDOWNS
+========================================================== */
+
+document.addEventListener(
+  "click",
+  () => {
+
+    document
+      .querySelectorAll(
+        ".options.show"
+      )
+      .forEach(options => {
+
+        options.classList.remove(
+          "show"
+        );
+
+
+        options
+          .parentElement
+          .querySelector(
+            ".select-button"
+          )
+          .classList.remove(
+            "open"
+          );
+
+      });
+
+  }
+);
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+generateCaption();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>My BCT — Bangladesh Cyber Tribe</title>
+<meta name="description" content="My BCT — Bangladesh Cyber Tribe এর অফিসিয়াল মেম্বারদের নিজস্ব টুলবক্স।">
+<link rel="icon" href="https://i.ibb.co/rRSZ1cz7/20260928-231500.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#e5092f;--red2:#ff2a4d;--soft:rgba(229,9,47,.1);--line2:rgba(229,9,47,.28);
+  --deep:#4a0713;--deep2:#2a030b;
+  --line:rgba(255,255,255,.08);--text:#eee;--muted:#8a8a8a;--panel:rgba(12,12,12,.72);
+  --tick:0px;--head:58px;--ease:cubic-bezier(.22,.8,.26,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html{background:#000;scroll-behavior:smooth}
+body{min-height:100vh;background:#000;color:var(--text);font:400 15px/1.65 'Anek Bangla',system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--red2);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--red);color:#fff;padding:8px 14px;z-index:999;border-radius:6px}
+.skip:focus{left:8px}
+.wrap{width:100%;max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* background */
+#bg{position:fixed;inset:0;z-index:-4;pointer-events:none}
+.grid{position:fixed;inset:0;z-index:-3;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 30%,#000 20%,transparent 75%)}
+.aurora{position:fixed;inset:0;z-index:-3;pointer-events:none;overflow:hidden}
+.aurora i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;will-change:transform}
+.aurora i:nth-child(1){width:46vmax;height:46vmax;left:-12vmax;top:-14vmax;background:radial-gradient(circle,rgba(229,9,47,.55),transparent 65%);animation:fl1 26s ease-in-out infinite alternate}
+.aurora i:nth-child(2){width:40vmax;height:40vmax;right:-14vmax;top:30vh;background:radial-gradient(circle,rgba(150,6,34,.6),transparent 65%);animation:fl2 32s ease-in-out infinite alternate}
+.aurora i:nth-child(3){width:30vmax;height:30vmax;left:30vw;bottom:-16vmax;background:radial-gradient(circle,rgba(255,42,77,.3),transparent 65%);animation:fl1 38s ease-in-out infinite alternate-reverse}
+@keyframes fl1{to{transform:translate(9vmax,7vmax) scale(1.15)}}
+@keyframes fl2{to{transform:translate(-8vmax,-6vmax) scale(1.2)}}
+.spot{position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%),rgba(255,42,77,.13),transparent 70%)}
+.vig{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 40%,rgba(0,0,0,.75) 100%)}
+
+/* header */
+.head{position:sticky;top:var(--tick);z-index:60;height:var(--head);background:rgba(0,0,0,.7);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.head .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(229,9,47,.5))}
+.brand-t{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.brand-t strong{font-weight:700;font-size:15px}
+.brand-t small{font-size:11px;color:var(--muted);letter-spacing:1px;white-space:nowrap}
+.nav{display:flex;gap:2px}
+.nav a{padding:6px 13px;font-weight:500;font-size:14px;color:#c4c4c4;border-radius:8px;transition:color .3s,background .3s}
+.nav a:hover{color:#fff;background:var(--soft)}
+.nav a.hot{color:#fff;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line2)}
+
+/* hero */
+.hero{padding:48px 0 34px}
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:30px}
+.live{display:inline-flex;align-items:center;gap:9px;padding:5px 13px 5px 11px;border:1px solid var(--line2);background:var(--soft);border-radius:999px;font-size:13px;font-weight:500;color:#ffd5dc}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--red2);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,42,77,.6)}70%,100%{box-shadow:0 0 0 9px rgba(255,42,77,0)}}
+h1.mark{margin:18px 0 10px;font-weight:700;line-height:1.05;font-size:clamp(40px,7.5vw,68px);letter-spacing:-.5px;background:linear-gradient(180deg,#fff 30%,#ffb3c0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 28px rgba(229,9,47,.4));animation:rise 1s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.type{min-height:30px;font-size:clamp(16px,2.2vw,19px);font-weight:500;color:#dcdcdc;animation:rise 1s .15s var(--ease) both}
+.type::after{content:"";display:inline-block;width:2px;height:1em;margin-left:4px;background:var(--red2);vertical-align:-2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;animation:rise 1s .3s var(--ease) both}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:11px 20px;font:600 14px 'Anek Bangla',sans-serif;color:#fff;border:0;border-radius:10px;cursor:pointer;transition:transform .3s var(--ease),box-shadow .3s,background .3s}
+.btn.solid{background:linear-gradient(135deg,var(--red2),var(--red));box-shadow:0 6px 20px rgba(229,9,47,.3)}
+.btn.line{background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.btn:hover{transform:translateY(-2px)}
+.btn.solid:hover{box-shadow:0 10px 26px rgba(229,9,47,.45)}
+.btn.line:hover{background:rgba(255,255,255,.1)}
+.arw{position:relative;width:14px;height:2px;background:currentColor;display:inline-block;border-radius:2px;transition:transform .3s var(--ease)}
+.arw::after{content:"";position:absolute;right:0;top:-3px;width:7px;height:7px;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg)}
+.btn:hover .arw,.card:hover .arw{transform:translateX(4px)}
+.arw.down{transform:rotate(90deg)}
+.btn:hover .arw.down{transform:rotate(90deg) translateX(4px)}
+
+/* emblem */
+.emblem{position:relative;width:min(100%,290px);aspect-ratio:1;margin:0 auto;animation:rise 1.2s .2s var(--ease) both}
+.emblem>*{position:absolute;border-radius:50%}
+.r1{inset:0;border:1px dashed rgba(229,9,47,.6);animation:spin 50s linear infinite}
+.r2{inset:10%;border:2px solid transparent;border-top-color:var(--red2);border-right-color:var(--red);animation:spin 9s linear infinite reverse;filter:drop-shadow(0 0 6px rgba(255,42,77,.6))}
+.r3{inset:21%;border:1px dotted rgba(255,255,255,.25);animation:spin 28s linear infinite}
+.r4{inset:26%;background:radial-gradient(circle,rgba(229,9,47,.28),transparent 70%);animation:breathe 5s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes breathe{50%{transform:scale(1.15);opacity:.6}}
+.orbit{inset:0;animation:spin 16s linear infinite}
+.orbit i{position:absolute;top:-4px;left:50%;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--red2);box-shadow:0 0 12px var(--red2)}
+.orbit.o2{inset:10%;animation-duration:10s;animation-direction:reverse}
+.orbit.o2 i{background:#fff;box-shadow:0 0 10px #fff;width:6px;height:6px}
+.core{inset:32%;display:grid;place-items:center;border-radius:0}
+.core img{width:100%;filter:drop-shadow(0 0 16px rgba(229,9,47,.7))}
+
+/* sections */
+section{scroll-margin-top:calc(var(--tick) + var(--head) + 12px)}
+.sec{padding:22px 0 26px}
+.toolsbar{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding:12px 16px;background:linear-gradient(90deg,rgba(229,9,47,.16),rgba(10,10,10,.6) 60%);border:1px solid var(--line2);border-radius:14px}
+.tb-ic{flex:none;width:38px;height:38px;border-radius:10px;background:linear-gradient(150deg,var(--red2),#8d0520);display:grid;place-items:center}
+.tb-ic div{display:grid;grid-template-columns:repeat(2,8px);gap:3px}
+.tb-ic i{width:8px;height:8px;background:#fff;border-radius:2px}
+.tb-ic i:nth-child(2){background:none;border:1.5px solid #fff}
+.tb-ic i:nth-child(3){border-radius:50%}
+.tb-t{flex:1}
+.tb-t h2{font-weight:700;font-size:17px;line-height:1.2}
+.tb-t p{color:var(--muted);font-size:13px}
+.tb-c{font-weight:600;font-size:13px;color:#ffd5dc;white-space:nowrap}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{display:block;overflow:hidden;background:#080808;border:1px solid var(--line);border-radius:16px;transition:transform .4s var(--ease),border-color .3s,box-shadow .4s}
+.card:hover{transform:translateY(-5px);border-color:var(--line2);box-shadow:0 14px 34px rgba(229,9,47,.2)}
+.card{position:relative}
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(220px circle at var(--cx,50%) var(--cy,50%),rgba(255,42,77,.16),transparent 70%)}
+.card:hover::after{opacity:1}
+.art{position:relative;height:130px;display:grid;place-items:center;overflow:hidden;border-bottom:1px solid var(--line)}
+.art::before{content:"";position:absolute;inset:-20px;transition:transform .8s var(--ease);-webkit-mask-image:linear-gradient(#000 15%,transparent);mask-image:linear-gradient(#000 15%,transparent)}
+.art::after{content:"";position:absolute;left:50%;top:50%;width:160px;height:160px;margin:-80px 0 0 -80px;border-radius:50%;background:radial-gradient(circle,rgba(229,9,47,.3),transparent 68%)}
+.card:hover .art::before{transform:scale(1.1) rotate(2deg)}
+.p1::before{background:repeating-radial-gradient(circle at 50% 55%,rgba(229,9,47,.5) 0 1px,transparent 1px 12px)}
+.p2::before{background:repeating-linear-gradient(135deg,rgba(229,9,47,.38) 0 2px,transparent 2px 12px)}
+.p3::before{background:repeating-linear-gradient(0deg,rgba(255,255,255,.1) 0 1px,transparent 1px 9px)}
+.tile{position:relative;z-index:2;width:62px;height:62px;display:grid;place-items:center;border:1px solid var(--red2);border-radius:18px;background:rgba(0,0,0,.85);box-shadow:0 0 26px rgba(229,9,47,.35)}
+.g{position:relative;width:30px;height:30px}
+.g i{position:absolute;display:block}
+.g-pf i:nth-child(1){left:9px;top:2px;width:12px;height:12px;border-radius:50%;background:#fff}
+.g-pf i:nth-child(2){left:3px;bottom:0;width:24px;height:13px;border-radius:12px 12px 0 0;background:var(--red2)}
+.g-po{border:2px solid #fff;border-radius:6px;overflow:hidden}
+.g-po i:nth-child(1){right:4px;top:4px;width:6px;height:6px;border-radius:50%;background:var(--red2)}
+.g-po i:nth-child(2){left:-2px;bottom:0;border-left:11px solid transparent;border-right:11px solid transparent;border-bottom:15px solid var(--red)}
+.g-po i:nth-child(3){left:11px;bottom:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:10px solid #fff}
+.g-ca{height:24px;top:2px;border:2px solid #fff;border-radius:6px}
+.g-ca i:nth-child(1){left:5px;top:5px;width:16px;height:2px;background:#fff}
+.g-ca i:nth-child(2){left:5px;top:10px;width:10px;height:2px;background:var(--red2)}
+.g-ca i:nth-child(3){left:18px;top:8px;width:2px;height:7px;background:var(--red2);animation:blink 1s steps(2) infinite}
+.cbody{padding:14px 16px 16px}
+.cbody h3{font-weight:700;font-size:16px;line-height:1.3}
+.cbody p{color:#a0a0a0;font-size:14px}
+.open{margin-top:10px;display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:14px;color:var(--red2)}
+
+/* note */
+.note{display:flex;align-items:center;gap:14px;padding:14px 18px;border-left:3px solid var(--red2);border-radius:0 12px 12px 0;background:linear-gradient(90deg,rgba(229,9,47,.12),transparent 75%)}
+.lock{position:relative;flex:none;width:24px;height:26px}
+.lock::before{content:"";position:absolute;left:4px;top:0;width:16px;height:14px;border:2.5px solid #fff;border-bottom:0;border-radius:9px 9px 0 0}
+.lock::after{content:"";position:absolute;left:0;bottom:0;width:24px;height:14px;background:var(--red2);border-radius:4px}
+.note strong{display:block;font-weight:600;font-size:15px}
+.note span{color:#aaa;font-size:14px}
+
+/* contact */
+.contact{display:grid;grid-template-columns:190px 1fr;overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:18px}
+.c-art{position:relative;display:grid;place-items:center;min-height:170px;border-right:1px solid var(--line);overflow:hidden}
+.c-art::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(229,9,47,.26) 0 2px,transparent 2px 11px);-webkit-mask-image:radial-gradient(circle,#000 15%,transparent 72%);mask-image:radial-gradient(circle,#000 15%,transparent 72%)}
+.env{position:relative;z-index:2;width:70px;height:48px;border:2.5px solid #fff;border-radius:7px;background:#060606;box-shadow:0 0 28px rgba(229,9,47,.4)}
+.env::before{content:"";position:absolute;left:-1px;top:-1px;border-left:32.5px solid transparent;border-right:32.5px solid transparent;border-top:24px solid var(--red2)}
+.env::after{content:"";position:absolute;right:-9px;top:-9px;width:12px;height:12px;border-radius:50%;background:var(--red2);animation:pulse 2s infinite}
+.c-body{padding:24px 26px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.c-body h2{font-size:clamp(19px,3vw,24px);font-weight:700;line-height:1.3}
+.c-body p{color:#a0a0a0}
+.mail{display:inline-flex;align-self:flex-start;align-items:center;gap:10px;margin-top:2px;padding:8px 14px;background:rgba(0,0,0,.55);border:1px solid var(--line2);border-radius:10px;font-weight:600;font-size:clamp(14px,3.4vw,17px);word-break:break-all}
+.mail::before{content:"@";display:grid;place-items:center;flex:none;width:22px;height:22px;border-radius:50%;background:var(--red);font-size:12px}
+.c-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+
+/* footer */
+footer{margin-top:50px;background:linear-gradient(180deg,var(--deep),var(--deep2));color:#f0d6d9;position:relative}
+footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--red2),#fff,var(--red2),transparent)}
+.f-main{display:grid;grid-template-columns:1.5fr 1fr 1.1fr 1.2fr;gap:30px;padding:44px 20px 34px}
+.f-brand .brand{margin-bottom:12px}
+.f-brand p{font-size:14px;color:#e2b8be;max-width:300px}
+.f-col h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:12px}
+.f-col ul{list-style:none;display:grid;gap:7px}
+.f-col a{font-size:14px;color:#eccdd1;transition:color .25s,padding .25s}
+.f-col a:hover{color:#fff;padding-left:4px}
+.f-mail{word-break:break-all;font-weight:600;color:#fff!important}
+.f-bar{border-top:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.25)}
+.f-bar .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;padding-top:14px;padding-bottom:14px;font-size:13px;color:#e2b8be}
+.f-bar b{color:#fff;font-weight:600}
+
+/* legal */
+.legal{padding:34px 20px 6px}
+.back{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;font-weight:500;font-size:14px;color:#c4c4c4;transition:color .3s}
+.back:hover{color:#fff}
+.back .arw{transform:rotate(180deg)}
+.doc-wrap{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start}
+.doc-nav{position:sticky;top:calc(var(--tick) + var(--head) + 16px);display:grid;gap:4px;padding:10px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.doc-nav h4{font-size:12px;color:var(--muted);font-weight:500;padding:2px 10px 6px}
+.doc-nav a{padding:8px 11px;font-weight:500;font-size:14px;border-radius:8px;color:#c4c4c4;transition:all .25s}
+.doc-nav a:hover{background:var(--soft);color:#fff}
+.doc-nav a.on{background:linear-gradient(90deg,rgba(229,9,47,.25),transparent);color:#fff;box-shadow:inset 2px 0 var(--red2)}
+.doc{padding:28px 28px 20px;background:var(--panel);border:1px solid var(--line);border-radius:16px;animation:rise .6s var(--ease) both}
+.doc h1{font-size:clamp(22px,3.6vw,30px);font-weight:700;line-height:1.25}
+.doc .meta{margin:6px 0 20px;color:var(--muted);font-size:13px}
+.doc .lead{padding:12px 14px;margin-bottom:6px;background:var(--soft);border-left:3px solid var(--red2);border-radius:0 10px 10px 0;color:#f0d3d8;font-size:14px}
+.doc ol{list-style:none;counter-reset:s}
+.doc li.s{counter-increment:s;position:relative;padding:16px 0 2px 44px;border-top:1px solid var(--line)}
+.doc li.s:first-child{border-top:0}
+.doc li.s::before{content:counter(s);position:absolute;left:0;top:16px;width:28px;height:28px;display:grid;place-items:center;background:var(--red);border-radius:8px;font-weight:600;font-size:13px}
+.doc h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.doc p{color:#c4c4c4;margin-bottom:8px;font-size:14px;max-width:72ch}
+.doc ul.b{margin:4px 0 10px 18px;color:#c4c4c4;font-size:14px;max-width:70ch}
+.doc ul.b li{margin-bottom:4px}
+.doc ul.b li::marker{color:var(--red2)}
+.doc a.lnk{color:#ff7088;border-bottom:1px solid rgba(255,112,136,.4)}
+
+.toast{position:fixed;left:50%;bottom:24px;z-index:200;transform:translate(-50%,24px);opacity:0;padding:9px 18px;background:#111;border:1px solid var(--red2);color:#fff;font-weight:500;font-size:14px;border-radius:10px;box-shadow:0 0 22px rgba(229,9,47,.35);transition:all .4s var(--ease);pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* scroll reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+@media(max-width:940px){.cards{grid-template-columns:repeat(2,1fr)}.f-main{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){
+  .hero{padding-top:28px}
+  .hero .wrap{grid-template-columns:1fr}
+  .emblem{width:min(62%,230px);order:-1}
+  .doc-wrap{grid-template-columns:1fr}
+  .doc-nav{position:static;display:flex;overflow-x:auto;padding:6px;scrollbar-width:none}
+  .doc-nav::-webkit-scrollbar{display:none}
+  .doc-nav h4{display:none}
+  .doc-nav a{white-space:nowrap}
+}
+@media(max-width:620px){
+  :root{--head:54px}
+  .wrap{padding:0 16px}
+  .brand-t small{display:none}
+  .nav a.hide-s{display:none}
+  .cards{grid-template-columns:1fr}
+  .tb-c{display:none}
+  .contact{grid-template-columns:1fr}
+  .c-art{min-height:120px;border-right:0;border-bottom:1px solid var(--line)}
+  .c-body{padding:20px 18px}
+  .f-main{grid-template-columns:1fr;gap:24px;padding-top:36px}
+  .doc{padding:22px 16px 14px}
+  .doc li.s{padding-left:38px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition:none!important}
+  .rv{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#tools">মূল অংশে যান</a>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="grid" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="spot" id="spot" aria-hidden="true"></div>
+<div class="vig" aria-hidden="true"></div>
+
+<header class="head">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="My BCT হোম">
+      <img src="https://i.ibb.co/rRSZ1cz7/20260928-231500.png" alt="BCT লোগো">
+      <span class="brand-t"><strong>My BCT</strong><small>BANGLADESH CYBER TRIBE</small></span>
+    </a>
+    <nav class="nav" aria-label="প্রধান মেনু">
+      <a href="#" class="hide-s">হোম</a>
+      <a href="#tools">টুলস</a>
+      <a href="#contact" class="hot">যোগাযোগ</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="home">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <div class="live"><i></i>অফিসিয়াল মেম্বার জোন</div>
+        <h1 class="mark">My BCT</h1>
+        <p class="type" id="typed" aria-live="off"></p>
+        <div class="cta">
+          <a class="btn solid" href="#tools">টুলস দেখুন <i class="arw down"></i></a>
+          <a class="btn line" href="#contact">যোগাযোগ</a>
+        </div>
+      </div>
+      <div class="emblem" aria-hidden="true">
+        <div class="r1"></div><div class="r2"></div><div class="r3"></div><div class="r4"></div>
+        <div class="orbit o1"><i></i></div><div class="orbit o2"><i></i></div>
+        <div class="core"><img src="https://i.ibb.co/rRSZ1cz7/20260928-231500.png" alt=""></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="tools">
+    <div class="wrap rv">
+      <div class="toolsbar">
+        <div class="tb-ic" aria-hidden="true"><div><i></i><i></i><i></i><i></i></div></div>
+        <div class="tb-t"><h2>Tools</h2><p>আমাদের নিজস্ব টুলবক্স</p></div>
+        <div class="tb-c">৩টি টুল</div>
+      </div>
+      <div class="cards">
+        <a class="card" href="profile-generator.html">
+          <div class="art p1"><div class="tile"><div class="g g-pf"><i></i><i></i></div></div></div>
+          <div class="cbody"><h3>Profile Generator</h3><p>ফ্রেমসহ প্রোফাইল ছবি</p><div class="open">খুলুন <i class="arw"></i></div></div>
+        </a>
+        <a class="card" href="post-generator.html">
+          <div class="art p2"><div class="tile"><div class="g g-po"><i></i><i></i><i></i></div></div></div>
+          <div class="cbody"><h3>Post Generator</h3><p>লাইভ প্রিভিউসহ পোস্ট ডিজাইন</p><div class="open">খুলুন <i class="arw"></i></div></div>
+        </a>
+        <a class="card" href="caption-generator.html">
+          <div class="art p3"><div class="tile"><div class="g g-ca"><i></i><i></i><i></i></div></div></div>
+          <div class="cbody"><h3>Caption Generator</h3><p>দ্রুত ক্যাপশন তৈরি</p><div class="open">খুলুন <i class="arw"></i></div></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap rv">
+      <div class="note">
+        <div class="lock" aria-hidden="true"></div>
+        <div><strong>সাইট'টি শুধুমাত্র বিসিটি এর অফিশিয়াল মেম্বারদের জন্য! </strong><span> এটি বাইরে শেয়ার করবেন না।</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="contact">
+    <div class="wrap rv">
+      <div class="contact">
+        <div class="c-art" aria-hidden="true"><div class="env"></div></div>
+        <div class="c-body">
+          <h2>কিছু জানতে বা জানাতে চান?</h2>
+          <p>প্রশ্ন, পরামর্শ বা সমস্যা থাকলে মেইল করুন।</p>
+          <a class="mail" href="mailto:bct.org@hotmail.com">bct.org@hotmail.com</a>
+          <div class="c-actions">
+            <a class="btn solid" href="mailto:bct.org@hotmail.com">মেইল পাঠান</a>
+            <button class="btn line" id="copyBtn" type="button">ঠিকানা কপি</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- LEGAL -->
+<div id="legal" hidden>
+  <div class="wrap legal">
+    <a class="back" href="#"><i class="arw"></i>হোমে ফিরুন</a>
+    <div class="doc-wrap">
+      <aside class="doc-nav" aria-label="নীতিমালা">
+        <h4>নীতিমালা</h4>
+        <a href="#terms" data-doc="terms">Terms &amp; Conditions</a>
+        <a href="#privacy" data-doc="privacy">Privacy Policy</a>
+        <a href="#disclaimer" data-doc="disclaimer">Disclaimer</a>
+        <a href="#cookies" data-doc="cookies">Cookie Policy</a>
+        <a href="#acceptable" data-doc="acceptable">Acceptable Use</a>
+      </aside>
+      <div>
+        <article class="doc" id="d-terms" hidden>
+          <h1>Terms &amp; Conditions</h1>
+          <p class="meta">কার্যকর: ৩০ সেপ্টেম্বর ২০২৬</p>
+          <p class="lead">My BCT ব্যবহার করলে আপনি নিচের শর্তগুলো মেনে নিচ্ছেন। শর্ত মানতে না চাইলে সাইট ব্যবহার করবেন না।</p>
+          <ol>
+            <li class="s"><h3>পরিচিতি</h3><p>My BCT হলো Bangladesh Cyber Tribe (BCT)-এর অফিসিয়াল মেম্বারদের কমিউনিটির কাজে ব্যবহারের জন্য তৈরি একটি টুলস সাইট। সাইটটির ডিজাইন ও ডেভেলপমেন্ট করেছে NexFly IT।</p></li>
+            <li class="s"><h3>কারা ব্যবহার করতে পারবেন</h3><p>এই টুলস শুধু BCT-র অফিসিয়াল মেম্বারদের জন্য। অনুমতি ছাড়া বাইরের কারও সাথে টুলস বা তার আউটপুট-ফ্রেম শেয়ার করা যাবে না।</p></li>
+            <li class="s"><h3>ব্যবহারের নিয়ম</h3><p>টুলস কেবল কমিউনিটির কাজে ব্যবহার করতে হবে। কোনো টুল বা ফ্রেম বিক্রি, ভাড়া বা বাণিজ্যিকভাবে পুনর্বিতরণ করা যাবে না। বিস্তারিত নিয়ম <a class="lnk" href="#acceptable">Acceptable Use</a> পাতায় আছে।</p></li>
+            <li class="s"><h3>মেধাস্বত্ব</h3><p>BCT-র নাম, লোগো, ফ্রেম, টেমপ্লেট ও সাইটের ডিজাইন BCT ও নির্মাতাদের সম্পত্তি। লিখিত অনুমতি ছাড়া এগুলো কপি, পরিবর্তন বা অন্যত্র ব্যবহার করা যাবে না।</p></li>
+            <li class="s"><h3>আপনার কনটেন্টের দায়</h3><p>টুলে আপনি যে ছবি বা লেখা ব্যবহার করেন, তা ব্যবহারের অধিকার আপনার আছে কি না এবং সেটি সঠিক কি না, তার দায়িত্ব আপনার।</p></li>
+            <li class="s"><h3>সেবার পরিবর্তন</h3><p>আমরা যেকোনো সময় টুল যোগ, পরিবর্তন বা বন্ধ করতে পারি। সাইট সবসময় নির্বিঘ্ন থাকবে বা ত্রুটিমুক্ত হবে, এমন নিশ্চয়তা দেওয়া হয় না।</p></li>
+            <li class="s"><h3>অ্যাক্সেস সীমিত করা</h3><p>শর্ত বা নীতিমালা ভাঙলে আমরা আপনার ব্যবহার সীমিত বা বন্ধ করার অধিকার রাখি।</p></li>
+            <li class="s"><h3>দায়ের সীমা</h3><p>সাইট ও টুলস “যেমন আছে” ভিত্তিতে দেওয়া হয়। এর ব্যবহারে সৃষ্ট কোনো ক্ষতির জন্য BCT বা NexFly IT আইনে অনুমোদিত সর্বোচ্চ সীমা পর্যন্ত দায়ী থাকবে না।</p></li>
+            <li class="s"><h3>শর্ত পরিবর্তন</h3><p>এই শর্তাবলি সময়ে সময়ে হালনাগাদ হতে পারে। পরিবর্তনের পর সাইট ব্যবহার করলে নতুন শর্ত মেনে নেওয়া হয়েছে ধরা হবে।</p></li>
+            <li class="s"><h3>যোগাযোগ</h3><p>যেকোনো প্রশ্নে লিখুন <a class="lnk" href="mailto:bct.org@hotmail.com">bct.org@hotmail.com</a></p></li>
+          </ol>
+        </article>
+
+        <article class="doc" id="d-privacy" hidden>
+          <h1>Privacy Policy</h1>
+          <p class="meta">কার্যকর: ৩০ সেপ্টেম্বর ২০২৬</p>
+          <p class="lead">সংক্ষেপে: আমরা কোনো অ্যাকাউন্ট, পাসওয়ার্ড বা ব্যক্তিগত তথ্য চাই না। আপনার ছবি ও লেখা আপনার ডিভাইসেই থাকে।</p>
+          <ol>
+            <li class="s"><h3>আমরা কী সংগ্রহ করি না</h3><p>My BCT-তে সাইন-আপ বা লগইন নেই। আমরা আপনার নাম, ফোন নম্বর, লোকেশন বা পরিচয়পত্র সংগ্রহ করি না।</p></li>
+            <li class="s"><h3>ছবি ও লেখা</h3><p>টুলে আপনি যে ছবি বা লেখা দেন, তা আপনার ব্রাউজারেই প্রসেস হয়। এগুলো আমাদের সার্ভারে পাঠানো বা জমা করা হয় না। পেজ বন্ধ করলে সেগুলো আর থাকে না।</p></li>
+            <li class="s"><h3>তৃতীয় পক্ষের সেবা</h3><p>সাইট লোড হতে কিছু বাইরের সেবা ব্যবহার হয়:</p>
+              <ul class="b"><li>Google Fonts থেকে ফন্ট</li><li>ImgBB থেকে লোগো ও ফ্রেমের ছবি</li><li>images.weserv.nl-এর মাধ্যমে ফ্রেমের ছবি লোড</li></ul>
+              <p>এসব সেবা আপনার আইপি অ্যাড্রেস ও ব্রাউজারের সাধারণ তথ্য পেতে পারে। সেগুলো তাদের নিজস্ব গোপনীয়তা নীতি অনুযায়ী পরিচালিত হয়।</p></li>
+            <li class="s"><h3>যোগাযোগ করলে</h3><p>আপনি মেইল করলে আপনার ইমেইল ঠিকানা ও বার্তা শুধু উত্তর দেওয়া ও সমস্যা সমাধানের জন্য ব্যবহার করা হয়। এগুলো বিক্রি বা বিজ্ঞাপনে ব্যবহার করা হয় না।</p></li>
+            <li class="s"><h3>নিরাপত্তা</h3><p>আমরা সাইটটি যতটা সম্ভব নিরাপদ রাখার চেষ্টা করি। তবে ইন্টারনেটে কোনো ব্যবস্থাই শতভাগ নিরাপদ নয়।</p></li>
+            <li class="s"><h3>আপনার অধিকার</h3><p>মেইলে পাঠানো আপনার তথ্য দেখতে, সংশোধন বা মুছে ফেলতে চাইলে আমাদের জানান।</p></li>
+            <li class="s"><h3>নীতি পরিবর্তন</h3><p>এই নীতি বদলালে এই পাতায় নতুন তারিখসহ প্রকাশ করা হবে।</p></li>
+            <li class="s"><h3>যোগাযোগ</h3><p><a class="lnk" href="mailto:bct.org@hotmail.com">bct.org@hotmail.com</a></p></li>
+          </ol>
+        </article>
+
+        <article class="doc" id="d-disclaimer" hidden>
+          <h1>Disclaimer</h1>
+          <p class="meta">কার্যকর: ৩০ সেপ্টেম্বর ২০২৬</p>
+          <p class="lead">টুলগুলো কাজ সহজ করার জন্য। আউটপুট ব্যবহারের আগে নিজে যাচাই করে নিন।</p>
+          <ol>
+            <li class="s"><h3>সাধারণ তথ্য</h3><p>My BCT-র টুল ও তথ্য শুধু সাহায্যের উদ্দেশ্যে দেওয়া। এগুলো আইনি, পেশাদার বা আনুষ্ঠানিক পরামর্শ নয়।</p></li>
+            <li class="s"><h3>আউটপুটের যাচাই</h3><p>টুল দিয়ে তৈরি ছবি, পোস্ট বা ক্যাপশন কোথাও ব্যবহারের আগে সঠিকতা ও উপযুক্ততা নিজে দেখে নেওয়া আপনার দায়িত্ব।</p></li>
+            <li class="s"><h3>ফলাফলের নিশ্চয়তা নেই</h3><p>টুলের আউটপুট কোনো প্ল্যাটফর্মে ব্যবহার করলে কী ফলাফল হবে, তার নিশ্চয়তা আমরা দিই না।</p></li>
+            <li class="s"><h3>তৃতীয় পক্ষ</h3><p>My BCT কোনো সামাজিক যোগাযোগমাধ্যম বা বাইরের প্ল্যাটফর্মের সাথে যুক্ত বা তাদের দ্বারা অনুমোদিত নয়। সেসব প্ল্যাটফর্মের নাম শুধু পরিচয় বোঝাতে ব্যবহৃত হতে পারে।</p></li>
+            <li class="s"><h3>বাইরের লিংক</h3><p>সাইটে বাইরের কোনো লিংক থাকলে তার কনটেন্টের দায় সংশ্লিষ্ট সাইটের।</p></li>
+          </ol>
+        </article>
+
+        <article class="doc" id="d-cookies" hidden>
+          <h1>Cookie Policy</h1>
+          <p class="meta">কার্যকর: ৩০ সেপ্টেম্বর ২০২৬</p>
+          <p class="lead">My BCT কোনো ট্র্যাকিং, অ্যানালিটিক্স বা বিজ্ঞাপন কুকি ব্যবহার করে না।</p>
+          <ol>
+            <li class="s"><h3>কুকি কী</h3><p>কুকি হলো ব্রাউজারে সংরক্ষিত ছোট ফাইল, যা সাইট আপনাকে মনে রাখতে ব্যবহার করে।</p></li>
+            <li class="s"><h3>আমরা কী ব্যবহার করি</h3><p>আমাদের নিজস্ব পাতাগুলো আপনার ব্রাউজারে কুকি বা স্থানীয় স্টোরেজে কোনো তথ্য রাখে না।</p></li>
+            <li class="s"><h3>তৃতীয় পক্ষ</h3><p>ফন্ট ও ছবি যেসব বাইরের সার্ভার থেকে লোড হয়, তারা নিজেদের নিয়মে কুকি বা লগ ব্যবহার করতে পারে। এর উপর আমাদের নিয়ন্ত্রণ নেই।</p></li>
+            <li class="s"><h3>নিয়ন্ত্রণ</h3><p>ব্রাউজারের সেটিংস থেকে আপনি কুকি দেখতে, মুছতে বা বন্ধ করতে পারেন।</p></li>
+          </ol>
+        </article>
+
+        <article class="doc" id="d-acceptable" hidden>
+          <h1>Acceptable Use</h1>
+          <p class="meta">কার্যকর: ৩০ সেপ্টেম্বর ২০২৬</p>
+          <p class="lead">কমিউনিটির সম্মান ও নিরাপত্তা রক্ষায় এই নিয়মগুলো সবাইকে মানতে হবে।</p>
+          <ol>
+            <li class="s"><h3>যা করা যাবে</h3><ul class="b"><li>কমিউনিটির প্রোফাইল, পোস্ট ও ক্যাপশন তৈরিতে টুল ব্যবহার</li><li>নিজের বা অনুমতিপ্রাপ্ত ছবি ও লেখা ব্যবহার</li></ul></li>
+            <li class="s"><h3>যা করা যাবে না</h3><ul class="b"><li>অন্যের ছবি বা পরিচয় তার অনুমতি ছাড়া ব্যবহার</li><li>মিথ্যা, বিভ্রান্তিকর বা অপমানজনক কনটেন্ট তৈরি</li><li>কাউকে হয়রানি, হুমকি বা ঘৃণা ছড়ানোর কাজে ব্যবহার</li><li>আইনবিরোধী কোনো কাজে ব্যবহার</li><li>টুল বা ফ্রেম কপি করে বিক্রি বা বাইরে বিতরণ</li><li>সাইটের কাজে বাধা দেওয়া বা নিরাপত্তা ভাঙার চেষ্টা</li></ul></li>
+            <li class="s"><h3>নিয়ম ভাঙলে</h3><p>নিয়ম ভাঙলে ব্যবহারের অনুমতি বাতিল হতে পারে এবং প্রয়োজনে BCT-র কমিউনিটি নিয়ম অনুযায়ী ব্যবস্থা নেওয়া হবে।</p></li>
+            <li class="s"><h3>অভিযোগ জানান</h3><p>অপব্যবহার চোখে পড়লে জানান: <a class="lnk" href="mailto:bct.org@hotmail.com">bct.org@hotmail.com</a></p></li>
+          </ol>
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap f-main">
+    <div class="f-col f-brand">
+      <a class="brand" href="#">
+        <img src="https://i.ibb.co/rRSZ1cz7/20260928-231500.png" alt="BCT লোগো">
+        <span class="brand-t"><strong>My BCT</strong><small>BANGLADESH CYBER TRIBE</small></span>
+      </a>
+      <p>Bangladesh Cyber Tribe এর অফিসিয়াল মেম্বারদের নিজস্ব টুলবক্স।</p>
+    </div>
+    <div class="f-col">
+      <h4>Explore</h4>
+      <ul><li><a href="#">হোম</a></li><li><a href="#tools">টুলস</a></li><li><a href="#contact">যোগাযোগ</a></li></ul>
+    </div>
+    <div class="f-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#terms">Terms &amp; Conditions</a></li>
+        <li><a href="#privacy">Privacy Policy</a></li>
+        <li><a href="#disclaimer">Disclaimer</a></li>
+        <li><a href="#cookies">Cookie Policy</a></li>
+        <li><a href="#acceptable">Acceptable Use</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      
+    </div>
+  </div>
+  <div class="f-bar">
+    <div class="wrap">
+      <span>© <span id="yr">2026</span> <b>Bangladesh Cyber Tribe</b>. All rights reserved.</span>
+      <span>Designed &amp; Developed by <b>NexFly IT</b></span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* typed line */
+  var lines=['আমাদের নিজস্ব টুলবক্স','ফ্রেমসহ প্রোফাইল ছবি বানান','পোস্ট ও ক্যাপশন তৈরি করুন'];
+  var typed=$('#typed');
+  if(reduce){typed.textContent=lines[0]}
+  else{
+    var li=0,ci=0,del=false;
+    (function tick(){
+      var s=lines[li];
+      typed.textContent=s.slice(0,ci);
+      if(!del&&ci<s.length){ci++;setTimeout(tick,70)}
+      else if(!del){del=true;setTimeout(tick,1800)}
+      else if(ci>0){ci--;setTimeout(tick,35)}
+      else{del=false;li=(li+1)%lines.length;setTimeout(tick,350)}
+    })();
+  }
+
+  /* copy mail */
+  var toast=$('#toast'),tt;
+  function say(t){toast.textContent=t;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('show')},2000)}
+  var cb=$('#copyBtn');
+  if(cb)cb.addEventListener('click',function(){
+    var t='bct.org@hotmail.com';
+    function fallback(){
+      var a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();
+      try{document.execCommand('copy');say('কপি হয়েছে')}catch(e){say('কপি করা যায়নি')}
+      document.body.removeChild(a);
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){say('কপি হয়েছে')},fallback)}else fallback();
+  });
+  $('#yr').textContent=new Date().getFullYear();
+
+  /* scroll reveal */
+  var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+  },{threshold:.12}):null;
+  function watch(){$$('.rv:not(.in)').forEach(function(el){io?io.observe(el):el.classList.add('in')})}
+
+  /* router */
+  var titles={terms:'Terms & Conditions',privacy:'Privacy Policy',disclaimer:'Disclaimer',cookies:'Cookie Policy',acceptable:'Acceptable Use'};
+  var home=$('#home'),legal=$('#legal');
+  function route(){
+    var h=decodeURIComponent(location.hash.replace('#',''));
+    if(titles[h]){
+      home.hidden=true;legal.hidden=false;
+      $$('.doc',legal).forEach(function(d){d.hidden=d.id!=='d-'+h});
+      $$('.doc-nav a',legal).forEach(function(a){a.classList.toggle('on',a.getAttribute('data-doc')===h)});
+      document.title=titles[h]+' — My BCT';
+      window.scrollTo(0,0);
+    }else{
+      legal.hidden=true;home.hidden=false;
+      document.title='My BCT — Bangladesh Cyber Tribe';
+      watch();
+      var el=h&&document.getElementById(h);
+      if(el){requestAnimationFrame(function(){el.scrollIntoView({behavior:'smooth',block:'start'})})}
+      else if(!h){window.scrollTo(0,0)}
+    }
+  }
+  window.addEventListener('hashchange',route);
+  route();
+
+  /* background: particle network + shapes + glow */
+  var c=$('#bg'),x=c.getContext('2d'),spot=$('#spot');
+  var W,H,dpr,P=[],S=[],mx=-999,my=-999,sx=0,sy=0,raf;
+  function size(){
+    dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;
+    c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function make(){
+    var n=Math.round(Math.min(90,W*H/16000));P=[];S=[];
+    for(var i=0;i<n;i++)P.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:.8+Math.random()*1.4,red:Math.random()<.6});
+    var types=['hex','tri','ring','sq','dia'],m=W<640?6:10;
+    for(i=0;i<m;i++)S.push({t:types[i%5],x:Math.random()*W,y:Math.random()*H,s:18+Math.random()*44,r:Math.random()*6.28,vr:(Math.random()-.5)*.004,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,a:.12+Math.random()*.2});
+  }
+  function poly(n,s,rot){
+    x.beginPath();
+    for(var i=0;i<n;i++){var a=rot+i*6.2832/n,px=Math.cos(a)*s,py=Math.sin(a)*s;i?x.lineTo(px,py):x.moveTo(px,py)}
+    x.closePath();
+  }
+  function shape(o){
+    o.x+=o.vx;o.y+=o.vy;o.r+=o.vr;
+    if(o.x<-90)o.x=W+90;if(o.x>W+90)o.x=-90;if(o.y<-90)o.y=H+90;if(o.y>H+90)o.y=-90;
+    x.save();x.translate(o.x,o.y);x.rotate(o.r);x.lineWidth=1;x.setLineDash([]);
+    x.strokeStyle='rgba(229,9,47,'+o.a+')';
+    switch(o.t){
+      case 'hex':poly(6,o.s,0);break;
+      case 'tri':poly(3,o.s,-1.57);break;
+      case 'dia':poly(4,o.s*.8,0);break;
+      case 'sq':poly(4,o.s*.7,.785);break;
+      default:x.beginPath();x.arc(0,0,o.s,0,6.2832);
+    }
+    x.stroke();x.restore();
+  }
+  var L=130;
+  function frame(){
+    x.clearRect(0,0,W,H);
+    sx+=(mx-sx)*.12;sy+=(my-sy)*.12;
+    for(var i=0;i<S.length;i++)shape(S[i]);
+    for(i=0;i<P.length;i++){
+      var p=P[i];p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+      var dx=p.x-sx,dy=p.y-sy,d=dx*dx+dy*dy;
+      if(d<19600&&d>1){var f=(1-Math.sqrt(d)/140)*.6;p.x+=dx/Math.sqrt(d)*f;p.y+=dy/Math.sqrt(d)*f}
+      for(var k=i+1;k<P.length;k++){
+        var q=P[k],ax=p.x-q.x,ay=p.y-q.y,dd=ax*ax+ay*ay;
+        if(dd<L*L){x.strokeStyle='rgba(229,9,47,'+(1-Math.sqrt(dd)/L)*.22+')';x.lineWidth=.8;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke()}
+      }
+      x.fillStyle=p.red?'rgba(255,42,77,.75)':'rgba(255,255,255,.5)';
+      x.beginPath();x.arc(p.x,p.y,p.r,0,6.2832);x.fill();
+      var md=(p.x-sx)*(p.x-sx)+(p.y-sy)*(p.y-sy);
+      if(md<26000){x.strokeStyle='rgba(255,42,77,'+(1-Math.sqrt(md)/161)*.5+')';x.beginPath();x.moveTo(p.x,p.y);x.lineTo(sx,sy);x.stroke()}
+    }
+  }
+  function loop(){frame();raf=requestAnimationFrame(loop)}
+  size();make();
+  window.addEventListener('resize',function(){size();make();if(reduce)frame()});
+  window.addEventListener('pointermove',function(e){
+    mx=e.clientX;my=e.clientY;
+    spot.style.setProperty('--mx',mx+'px');spot.style.setProperty('--my',my+'px');
+  },{passive:true});
+  window.addEventListener('pointerleave',function(){mx=my=-999});
+  $$('.card').forEach(function(cd){cd.addEventListener('pointermove',function(e){
+    var r=cd.getBoundingClientRect();cd.style.setProperty('--cx',e.clientX-r.left+'px');cd.style.setProperty('--cy',e.clientY-r.top+'px');
+  })});
+  document.addEventListener('visibilitychange',function(){
+    if(reduce)return;
+    if(document.hidden)cancelAnimationFrame(raf);else raf=requestAnimationFrame(loop);
+  });
+  if(reduce){frame()}else{raf=requestAnimationFrame(loop)}
+})();
+</script>
+</body>
+</html>

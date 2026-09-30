@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>BCT Profile Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--red:#e5092f;--red2:#ff1745;--red-soft:rgba(229,9,47,.10);--border:rgba(255,255,255,.08);--text:#f1f1f1;--muted:#777}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;background:#000}
+body{color:var(--text);font-family:Rajdhani,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-3;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:50px 50px}
+body:after{content:"";position:fixed;left:0;top:-10px;width:100%;height:1px;z-index:-2;background:linear-gradient(90deg,transparent,rgba(229,9,47,.3),transparent);animation:scan 9s linear infinite}
+@keyframes scan{0%{top:-10px;opacity:0}10%{opacity:1}90%{opacity:.5}100%{top:100vh;opacity:0}}
+.app{width:100%;max-width:1050px;min-height:100vh;margin:auto;padding:0 18px 30px}
+.header{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:relative}
+.header:after{content:"";position:absolute;bottom:-1px;left:0;width:100px;height:1px;background:var(--red);box-shadow:0 0 10px rgba(229,9,47,.5)}
+.brand{display:flex;align-items:center;gap:11px}
+.brand img{width:43px;height:43px;object-fit:contain}
+.brand-name{font-family:Orbitron,sans-serif;font-size:13px;font-weight:800;letter-spacing:1.2px}
+.brand-sub{margin-top:5px;color:#666;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px}
+.status{display:flex;align-items:center;gap:7px;color:#666;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1.5px}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 9px rgba(229,9,47,.7)}
+.main{padding-top:24px;max-width:640px;margin:auto}
+.section-title{display:flex;align-items:center;gap:10px;margin-bottom:12px;color:#888;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px}
+.section-title:before{content:"";width:3px;height:12px;background:var(--red)}
+.section-title:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,rgba(255,255,255,.08),transparent)}
+.panel{background:linear-gradient(180deg,#0c0c0c,#080808);border:1px solid var(--border);border-radius:13px;padding:16px;margin-bottom:14px}
+
+/* upload */
+.upload{min-height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;border:1px dashed rgba(255,255,255,.14);border-radius:12px;background:#090909;cursor:pointer;transition:.25s}
+.upload:hover,.upload.dragging{border-color:rgba(229,9,47,.5);background:linear-gradient(135deg,rgba(229,9,47,.07),rgba(255,255,255,.01)),#090909}
+.upload-icon{width:52px;height:52px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(229,9,47,.3);border-radius:12px;background:var(--red-soft);color:var(--red);margin-bottom:16px}
+.upload-icon svg{width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.upload-title{font-family:Orbitron,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:8px}
+.upload-desc{color:#666;font-size:13px;font-weight:600;line-height:1.5}
+.upload-format{margin-top:14px;color:#444;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1.5px}
+
+/* editor */
+#editor{display:none}
+#editor.visible{display:block}
+.preview{width:100%;max-width:520px;margin:0 auto;aspect-ratio:1/1;position:relative;background:#000;border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden}
+#result-canvas{width:100%;height:100%;display:block}
+.loading{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:rgba(0,0,0,.85);z-index:20}
+.loading.active{display:flex}
+.ring{width:32px;height:32px;border:2px solid rgba(255,255,255,.12);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{color:#777;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px}
+
+/* controls */
+.row{padding:13px 12px;border:1px solid rgba(255,255,255,.07);border-radius:9px;background:#080808;margin-bottom:8px}
+.row-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.row-name{color:#777;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1.4px;text-transform:uppercase}
+.row-right{display:flex;align-items:center;gap:10px}
+.row-val{min-width:44px;text-align:right;color:var(--red);font-family:Orbitron,sans-serif;font-size:10px;font-weight:700}
+.lock{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(255,255,255,.02);color:#777;cursor:pointer;transition:.2s}
+.lock:hover{color:#fff;border-color:rgba(229,9,47,.35)}
+.lock svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.row.locked .lock{color:var(--red);border-color:rgba(229,9,47,.4);background:var(--red-soft)}
+.row.locked input[type=range]{opacity:.25;pointer-events:none}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:#262626;border-radius:999px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--red);border:3px solid #000;box-shadow:0 0 0 1px var(--red),0 0 9px rgba(229,9,47,.5);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--red);border:3px solid #000;box-shadow:0 0 0 1px var(--red);cursor:pointer}
+
+/* buttons */
+.actions{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;margin-top:10px}
+.btn{min-height:46px;border:1px solid rgba(255,255,255,.08);border-radius:8px;background:#090909;color:#aaa;font-family:Orbitron,sans-serif;font-size:9px;font-weight:700;letter-spacing:.8px;cursor:pointer;transition:.2s}
+.btn:hover{color:#fff;border-color:rgba(229,9,47,.35)}
+.btn:active{transform:scale(.99)}
+.btn.primary{color:#fff;border-color:rgba(229,9,47,.55);background:linear-gradient(135deg,#430610,#92071f)}
+.btn.primary:hover{border-color:var(--red)}
+
+/* modal */
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:9999;opacity:0;visibility:hidden;transition:.25s}
+.modal.show{opacity:1;visibility:visible}
+.modal-box{width:100%;max-width:370px;padding:22px;background:#080808;border:1px solid rgba(229,9,47,.25);border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.75);transform:translateY(10px) scale(.98);transition:.25s}
+.modal.show .modal-box{transform:none}
+.modal-title{font-family:Orbitron,sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px}
+.modal-title:before{content:"";display:inline-block;width:3px;height:12px;background:var(--red);margin-right:10px;vertical-align:-1px}
+.modal-text{color:#888;font-size:14px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:10px 16px;background:#0b0b0b;border:1px solid rgba(229,9,47,.3);border-left:2px solid var(--red);border-radius:6px;color:#ddd;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1.2px;z-index:10000;transition:.3s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.footer{padding:20px 0 5px;text-align:center;color:#3f3f3f;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px}
+.footer strong{color:#666}
+
+@media(max-width:600px){
+.app{padding:0 12px 24px}.header{height:70px}.brand img{width:38px;height:38px}
+.brand-name{font-size:10px;letter-spacing:.8px}.brand-sub,.status{font-size:7px}
+.main{padding-top:17px}.panel{padding:12px}.upload{min-height:200px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="header">
+  <div class="brand">
+    <img src="https://i.ibb.co/rRSZ1cz7/20260928-231500.png" alt="BCT">
+    <div>
+      <div class="brand-name">BANGLADESH CYBER TRIBE</div>
+      <div class="brand-sub">PROFILE GENERATOR</div>
+    </div>
+  </div>
+  
+</header>
+
+<main class="main">
+
+  <div class="panel">
+    <div class="section-title">SOURCE FILE</div>
+    <div class="upload" id="drop-zone">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 15v4c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-4"/></svg>
+      </div>
+      <div class="upload-title">UPLOAD AVATAR</div>
+      <div class="upload-desc">Click here or drag and drop<br>your image into this area.</div>
+      <div class="upload-format">JPG · JPEG · PNG · WEBP</div>
+    </div>
+    <input type="file" id="file-input" accept="image/*" hidden>
+  </div>
+
+  <div id="editor">
+    <div class="panel">
+      <div class="section-title">PREVIEW</div>
+      <div class="preview">
+        <canvas id="result-canvas"></canvas>
+        <div class="loading" id="loader"><div class="ring"></div><div class="loading-text">PROCESSING...</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="section-title">CALIBRATION</div>
+      <div id="controls"></div>
+      <div class="actions">
+        <button class="btn" id="reset-btn" type="button">REVERT</button>
+        <button class="btn primary" id="download-btn" type="button">EXPORT AVATAR</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">Developed By: <strong>NexFly Org</strong></footer>
+</div>
+
+<div class="modal" id="confirm-modal">
+  <div class="modal-box">
+    <div class="modal-title">UNLOCK PARAMETER?</div>
+    <div class="modal-text">This module is locked by default. Confirm if you wish to override and manually adjust this setting.</div>
+    <div class="modal-actions">
+      <button class="btn" id="cancel-unlock" type="button">CANCEL</button>
+      <button class="btn primary" id="confirm-unlock" type="button">OVERRIDE</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast-msg"></div>
+
+<script>
+const SIZE = 1080;
+const BORDER_URL = "https://i.ibb.co/LhPqWNPz/PLPL-Osman-20260928-231623.png";
+
+const $ = id => document.getElementById(id);
+const fileInput = $("file-input"), dropZone = $("drop-zone"), editor = $("editor");
+const canvas = $("result-canvas"), ctx = canvas.getContext("2d");
+const loader = $("loader"), modal = $("confirm-modal"), toast = $("toast-msg");
+
+let userImg = null, borderImg = null, pendingId = null, debounce = null, toastT = null;
+
+/* id, label, min, max, default, suffix */
+const PARAMS = [
+  ["zoom","Scale",50,250,100,"%"],
+  ["x","Position X",-100,100,0,""],
+  ["y","Position Y",-100,100,0,""],
+  ["rot","Rotation",-180,180,0,"°"],
+  ["bri","Brightness",50,150,100,"%"],
+  ["con","Contrast",50,150,100,"%"],
+  ["sat","Saturation",0,200,100,"%"]
+];
+
+const ICON_LOCK = '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+const ICON_UNLOCK = '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.9-1"/></svg>';
+
+/* build controls */
+$("controls").innerHTML = PARAMS.map(([id,label,min,max,def,suf]) => `
+  <div class="row locked" id="group-${id}">
+    <div class="row-top">
+      <div class="row-name">${label}</div>
+      <div class="row-right">
+        <div class="row-val" id="val-${id}">${def}${suf}</div>
+        <button class="lock" id="btn-lock-${id}" type="button">${ICON_LOCK}</button>
+      </div>
+    </div>
+    <input type="range" id="sl-${id}" min="${min}" max="${max}" value="${def}" disabled>
+  </div>`).join("");
+
+PARAMS.forEach(([id]) => {
+  $("sl-" + id).addEventListener("input", updateValues);
+  $("btn-lock-" + id).addEventListener("click", () => toggleLock(id));
+});
+
+/* upload */
+dropZone.addEventListener("click", () => fileInput.click());
+fileInput.addEventListener("change", () => { if (fileInput.files[0]) handleImage(fileInput.files[0]); });
+dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("dragging"); });
+dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragging"));
+dropZone.addEventListener("drop", e => {
+  e.preventDefault(); dropZone.classList.remove("dragging");
+  if (e.dataTransfer.files[0]) handleImage(e.dataTransfer.files[0]);
+});
+
+/* border */
+async function loadBorder() {
+  try { borderImg = await loadImageObj(`https://images.weserv.nl/?url=${encodeURIComponent(BORDER_URL)}&output=png`); }
+  catch (e) {
+    try { borderImg = await loadImageObj(BORDER_URL); }
+    catch (e2) { borderImg = null; showToast("Border asset unavailable"); }
+  }
+}
+loadBorder();
+
+async function handleImage(file) {
+  if (!file || !file.type.startsWith("image/")) { showToast("Invalid file type"); return; }
+  showLoader(true);
+  try {
+    userImg = await loadImageObj(await fileToDataURL(file));
+    editor.classList.add("visible");
+    resetControls();
+    await drawCanvas();
+    setTimeout(() => editor.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    showToast("Avatar loaded");
+  } catch (e) { console.error(e); showToast("Initialization failed"); }
+  showLoader(false);
+}
+
+function updateValues() {
+  PARAMS.forEach(([id,,,,,suf]) => { $("val-" + id).innerText = $("sl-" + id).value + suf; });
+  clearTimeout(debounce);
+  debounce = setTimeout(drawCanvas, 25);
+}
+
+function drawCanvas() {
+  return new Promise(resolve => {
+    if (!userImg) { resolve(); return; }
+    requestAnimationFrame(() => {
+      canvas.width = SIZE; canvas.height = SIZE;
+      const v = id => Number($("sl-" + id).value);
+      const zoom = v("zoom") / 100, posX = v("x") / 100 * SIZE, posY = v("y") / 100 * SIZE;
+      const rot = v("rot") * Math.PI / 180;
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      ctx.fillStyle = "#000"; ctx.fillRect(0, 0, SIZE, SIZE);
+      const scale = Math.max(SIZE / userImg.width, SIZE / userImg.height) * zoom;
+      const w = userImg.width * scale, h = userImg.height * scale;
+      ctx.save();
+      ctx.filter = `brightness(${v("bri")}%) contrast(${v("con")}%) saturate(${v("sat")}%)`;
+      ctx.translate(SIZE / 2 + posX, SIZE / 2 + posY);
+      ctx.rotate(rot);
+      ctx.drawImage(userImg, -w / 2, -h / 2, w, h);
+      ctx.restore();
+      if (borderImg) ctx.drawImage(borderImg, 0, 0, SIZE, SIZE);
+      resolve();
+    });
+  });
+}
+
+function lockRow(id, locked) {
+  $("sl-" + id).disabled = locked;
+  $("group-" + id).classList.toggle("locked", locked);
+  $("btn-lock-" + id).innerHTML = locked ? ICON_LOCK : ICON_UNLOCK;
+}
+
+function resetControls() {
+  PARAMS.forEach(([id,,,,def]) => { $("sl-" + id).value = def; lockRow(id, true); });
+  updateValues();
+}
+
+function toggleLock(id) {
+  if ($("sl-" + id).disabled) { pendingId = id; modal.classList.add("show"); return; }
+  lockRow(id, true);
+}
+
+$("confirm-unlock").addEventListener("click", () => {
+  if (!pendingId) return;
+  lockRow(pendingId, false);
+  pendingId = null; modal.classList.remove("show");
+});
+const closeModal = () => { pendingId = null; modal.classList.remove("show"); };
+$("cancel-unlock").addEventListener("click", closeModal);
+modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+$("reset-btn").addEventListener("click", () => {
+  userImg = null; fileInput.value = "";
+  editor.classList.remove("visible");
+  showToast("System reverted");
+});
+
+$("download-btn").addEventListener("click", async () => {
+  if (!userImg) { showToast("Upload required"); return; }
+  showLoader(true);
+  try {
+    await drawCanvas();
+    setTimeout(() => {
+      const a = document.createElement("a");
+      a.download = "BCT_Identity_" + Date.now() + ".png";
+      a.href = canvas.toDataURL("image/png", 1.0);
+      document.body.appendChild(a); a.click(); a.remove();
+      showLoader(false); showToast("Export successful");
+    }, 400);
+  } catch (e) { showLoader(false); showToast("Export failed"); }
+});
+
+function fileToDataURL(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = e => res(e.target.result); r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+function loadImageObj(src) {
+  return new Promise((res, rej) => {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.onload = () => res(img); img.onerror = rej;
+    img.src = src;
+  });
+}
+function showLoader(s) { loader.classList.toggle("active", s); }
+function showToast(msg) {
+  toast.innerText = msg; toast.classList.add("show");
+  clearTimeout(toastT);
+  toastT = setTimeout(() => toast.classList.remove("show"), 2800);
+}
+</script>
+</body>
+</html>
